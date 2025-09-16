@@ -64,7 +64,7 @@ header {
     .divider{height:1px;background:var(--border);margin:12px 0}
     .kudos{font-weight:900;color:#111827;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
     footer{margin-top:18px;text-align:center;color:#6b7280;font-size:13px}
-   /* --- 반응형 웹 디자인 규칙 --- */
+ /* --- 반응형 웹 디자인 규칙 --- */
 
       /* 태블릿 사이즈 (768px 이하) */
       @media (max-width: 768px) {
@@ -91,18 +91,30 @@ header {
         }
       }
       
-      /* --- 전체화면 모드 스타일 --- */
+      /* --- 전체화면 모드 스타일 (개선 버전) --- */
       .max:fullscreen {
         width: 100%;
         height: 100%;
-        max-width: none; /* 가로 너비 제한 해제 */
-        overflow-y: auto; /* 내용이 길어지면 스크롤 생성 */
+        max-width: none;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
-        background: var(--bg); /* 👈 이 배경색 코드가 문제를 해결합니다! */
+        background: var(--bg); 
       }
 
-      /* 전체화면일 때, 게임 화면이 남은 공간을 꽉 채우도록 설정 */
+      /* 새로 추가한 main 태그가 남은 공간을 모두 차지하도록 설정 */
+      .max:fullscreen .screens-wrapper {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* ✨ 문제 해결의 핵심! 전체화면 상태에서 hidden 속성이 있는 section은 무조건 숨김 */
+      .max:fullscreen section[hidden] {
+        display: none !important;
+      }
+
+      /* 전체화면일 때, 게임 화면이 남은 공간을 꽉 채우도록 설정 (기존과 동일) */
       .max:fullscreen .screen {
         flex-grow: 1;
         display: flex;
@@ -118,7 +130,7 @@ header {
       .max:fullscreen .stage img {
         width: 100%;
         height: 100%;
-        object-fit: contain; /* 이미지 비율을 유지하면서 꽉 채우기 */
+        object-fit: contain;
       }
   </style>
 </head>
@@ -135,49 +147,50 @@ header {
 
 
     <!-- 시작 화면 -->
-    <section id="screen-start" class="screen card" role="region" aria-label="시작 화면">
-      <div class="row">
-        <h2 style="margin:0">난이도 선택</h2>
-      </div>
-      <div class="row" style="margin-top:6px">
-        <span class="pill">난이도</span>
-        <label><input type="radio" name="diff" value="easy" checked> 쉬움</label>
-        <label><input type="radio" name="diff" value="normal"> 보통</label>
-        <label><input type="radio" name="diff" value="hard"> 어려움</label>
-      <span class="grow"></span>
-    </div>
-    <div class="grid g-3" id="grid" style="margin-top:16px"></div>
-    <p class="sub" id="policy-line"><br><br>이 활동은 <b>생성형 AI 이미지</b>에서 사실과 상상을 구분하는 능력을 기를 수 있습니다. <br> 이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다</b>. <br> 공유 시에는 <b>출처 표기와 사실 확인</b>을 확인해주세요.</p>
-    </section>
-
-    <!-- 플레이 화면 -->
-    <section id="screen-play" class="screen card" role="region" aria-label="플레이 화면" hidden>
-      <div class="row">
-        <h2 id="play-title" style="margin:0">플레이</h2>
-        <span class="grow"></span>
-        <button id="btn-exit" class="ghost">← 처음 화면으로 돌아가기</button>
-      </div>
-      <div class="sub" id="play-caption">화면에서 단서 3곳을 찾아 클릭하세요.</div>
-      <div id="stage" class="stage" tabindex="0" aria-label="단서를 찾는 영역"></div>
-      <div class="row" style="margin-top:12px">
-        <span class="pill">찾은 단서: <b id="found">0</b>/<b id="need">0</b></span>
-        <span class="pill">소요 시간: <b id="clock">00:00</b></span>
-        <span class="grow"></span>
-        <button id="btn-hint" class="ghost">💡 힌트 보기</button>
-      </div>
-      <div id="result" hidden>
-        <div class="divider"></div>
-        <h3 class="kudos">🎉 진짜 모습 확인 완료!</h3>
-        <p class="sub" id="summary">오늘의 발견:</p>
-        <div id="original" class="stage" style="margin-top:10px"></div>
-        <div class="row" style="margin-top:12px">
-          <button id="btn-replay" class="btn">다시하기</button>
-          <button id="btn-other" class="ghost">다른 콘텐츠</button>
+    </header>
+    
+    <main class="screens-wrapper">
+      <section id="screen-start" class="screen card" role="region" aria-label="시작 화면">
+        <div class="row">
+          <h2 style="margin:0">난이도 선택</h2>
         </div>
-      </div>
-    </section>
+        <div class="row" style="margin-top:6px">
+          <span class="pill">난이도</span>
+          <label><input type="radio" name="diff" value="easy" checked> 쉬움</label>
+          <label><input type="radio" name="diff" value="normal"> 보통</label>
+          <label><input type="radio" name="diff" value="hard"> 어려움</label>
+          <span class="grow"></span>
+        </div>
+        <div class="grid g-3" id="grid" style="margin-top:16px"></div>
+        <p class="sub" id="policy-line"><br><br>이 활동은 <b>생성형 AI 이미지</b>에서 사실과 상상을 구분하는 능력을 기를 수 있습니다. <br> 이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다</b>. <br> 공유 시에는 <b>출처 표기와 사실 확인</b>을 확인해주세요.</p>
+      </section>
 
-    <footer>제작자: 김혜인 · 문의: <a href="mailto:hyein_1221@hanmail.net">hyein_1221@hanmail.net</a></footer>
+      <section id="screen-play" class="screen card" role="region" aria-label="플레이 화면" hidden>
+        <div class="row">
+          <h2 id="play-title" style="margin:0">플레이</h2>
+          <span class="grow"></span>
+          <button id="btn-exit" class="ghost">← 처음 화면으로 돌아가기</button>
+        </div>
+        <div class="sub" id="play-caption">화면에서 단서 3곳을 찾아 클릭하세요.</div>
+        <div id="stage" class="stage" tabindex="0" aria-label="단서를 찾는 영역"></div>
+        <div class="row" style="margin-top:12px">
+          <span class="pill">찾은 단서: <b id="found">0</b>/<b id="need">0</b></span>
+          <span class="pill">소요 시간: <b id="clock">00:00</b></span>
+          <span class="grow"></span>
+          <button id="btn-hint" class="ghost">💡 힌트 보기</button>
+        </div>
+        <div id="result" hidden>
+          <div class="divider"></div>
+          <h3 class="kudos">🎉 진짜 모습 확인 완료!</h3>
+          <p class="sub" id="summary">오늘의 발견:</p>
+          <div id="original" class="stage" style="margin-top:10px"></div>
+          <div class="row" style="margin-top:12px">
+            <button id="btn-replay" class="btn">다시하기</button>
+            <button id="btn-other" class="ghost">다른 콘텐츠</button>
+          </div>
+        </div>
+      </section>
+    </main> <footer> 제작자: 김혜인 · 문의: <a href="mailto:hyein_1221@hanmail.net">hyein_1221@hanmail.net</a></footer>
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
