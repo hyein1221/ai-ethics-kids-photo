@@ -64,7 +64,9 @@ header {
     .divider{height:1px;background:var(--border);margin:12px 0}
     .kudos{font-weight:900;color:#111827;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
     footer{margin-top:18px;text-align:center;color:#6b7280;font-size:13px}
-     /* 태블릿 사이즈 (768px 이하) */
+   /* --- 반응형 웹 디자인 규칙 --- */
+
+      /* 태블릿 사이즈 (768px 이하) */
       @media (max-width: 768px) {
         .g-3 {
           grid-template-columns: repeat(2, 1fr); /* 2열로 변경 */
@@ -88,7 +90,8 @@ header {
             justify-content: center;
         }
       }
-    /* --- 전체화면 모드 스타일 --- */
+      
+      /* --- 전체화면 모드 스타일 --- */
       .max:fullscreen {
         width: 100%;
         height: 100%;
@@ -96,6 +99,7 @@ header {
         overflow-y: auto; /* 내용이 길어지면 스크롤 생성 */
         display: flex;
         flex-direction: column;
+        background: var(--bg); /* 👈 이 배경색 코드가 문제를 해결합니다! */
       }
 
       /* 전체화면일 때, 게임 화면이 남은 공간을 꽉 채우도록 설정 */
