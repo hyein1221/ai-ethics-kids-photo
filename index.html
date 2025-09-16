@@ -391,8 +391,14 @@ function speak(text){
     }
     $btnFullscreen.onclick = toggleFullscreen;
 
-    // Session timer
-    const t0=Date.now();
+   // Session timer
+    // ✨ FIX: sessionStorage를 사용해 새로고침해도 시간 유지
+    let t0 = sessionStorage.getItem('sessionStartTime');
+    if (!t0) {
+      t0 = Date.now();
+      sessionStorage.setItem('sessionStartTime', t0);
+    }
+
     setInterval(()=>{
         const s=Math.floor((Date.now()-t0)/1000);
         const mm=String(Math.floor(s/60)).padStart(2,'0');
