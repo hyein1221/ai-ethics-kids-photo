@@ -82,6 +82,7 @@
 <div class="max">
   <header class="row">
     <h1 class="headline">1차시 | 사진 나라의 수상한 단서 찾기: 진짜와 다른 점을 찾아요</h1>
+    <span class="pill">전체 합계: 찾은 단서 <b id="stat-found">0</b> · 전체 사용 시간 <b id="stat-time">00:00</b></span>
     <span class="grow"></span>
     <button id="btn-fullscreen" class="ghost">🖼️ 전체화면</button>
     <button id="btn-audio" class="ghost">🔈 음성 OFF</button>
@@ -100,15 +101,15 @@
         <span class="grow"></span>
       </div>
       <div class="grid" id="grid" style="margin-top:16px"></div>
-     <p class="sub" id="policy-line">
-이 활동은 <b>사진 속 실제와 다른 단서</b>를 찾아보며,  
-사진이 실제와 다르게 바뀔 수 있음을 배우고 설명할 수 있도록 돕습니다.  
-찾아낸 내용을 통해 비판적으로 생각하는 힘을 기르고,  
-디지털 자료를 사용할 때는 <b>허락받기·확인하기·시간 지키기</b> 약속을 실천합니다.  
-<br><br>
-이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다.</b>  
-공유할 때에는 반드시 <b>출처 표기와 사실 확인</b>을 함께 지켜주세요.
-</p>
+      <p class="sub" id="policy-line">
+        이 활동은 <b>사진 속 실제와 다른 단서</b>를 찾아보며,  
+        사진이 실제와 다르게 바뀔 수 있음을 배우고 설명할 수 있도록 돕습니다.  
+        찾아낸 내용을 통해 비판적으로 생각하는 힘을 기르고,  
+        디지털 자료를 사용할 때는 <b>허락받기·확인하기·시간 지키기</b> 약속을 실천합니다.  
+        <br><br>
+        이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다.</b>  
+        공유할 때에는 반드시 <b>출처 표기와 사실 확인</b>을 함께 지켜주세요.
+      </p>
     </section>
 
     <section id="screen-play" class="screen card" role="region" aria-label="플레이 화면" hidden>
@@ -162,23 +163,22 @@ function speak(text){
 
 <script>
   const CONTENT = {
-    easy: [
-      { id:'p-e-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png', need:3, spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}] },
-      { id:'p-e-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png', need:3, spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}] },
-      { id:'p-e-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png', need:3, spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}] }
-    ],
-    normal:[
-      { id:'p-n-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png', need:3, spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}] },
-      { id:'p-n-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png', need:3, spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}] },
-      { id:'p-n-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png', need:3, spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}] }
-    ],
-    hard:[
-      { id:'p-h-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png', need:3, spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}] },
-      { id:'p-h-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png', need:3, spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}] },
-      { id:'p-h-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png', need:3, spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}] }
-    ]
-  };
-
+  easy: [
+    { id:'p-e-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png', need:3, spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}] },
+    { id:'p-e-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png', need:3, spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}] },
+    { id:'p-e-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png', need:3, spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}] }
+  ],
+  normal:[
+    { id:'p-n-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png', need:3, spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}] },
+    { id:'p-n-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png', need:3, spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}] },
+    { id:'p-n-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png', need:3, spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}] }
+  ],
+  hard:[
+    { id:'p-h-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png', need:3, spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}] },
+    { id:'p-h-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png', need:3, spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}] },
+    { id:'p-h-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png', need:3, spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}] }
+  ]
+};
   const qs = s=>document.querySelector(s);
   const qsa = s=>[...document.querySelectorAll(s)];
   const $start = qs('#screen-start');
