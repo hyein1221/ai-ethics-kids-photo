@@ -6,69 +6,49 @@
   <title>1차시 | 사진 나라의 수상한 단서 찾기 : 진짜와 다른 점을 찾아요</title>
   <style>
     :root{
-      /* 밝은 톤 (유아용) */
-      --bg:#fff8e6;         /* warm light */
-      --panel:#ffffffee;     /* white panel */
-      --muted:#64748b;        /* slate-500 */
-      --text:#1f2937;         /* slate-800 */
-      --accent:#fbbf24;       /* amber-400 */
-      --accent2:#fb923c;      /* orange-400 */
-      --good:#16a34a;         /* green-600 */
-      --bad:#ef4444;          /* red-500 */
-      --ring:#f59e0b;         /* amber-500 */
-      --soft:#f8fafc;         /* stage bg */
-      --border:#e5e7eb;       /* light border */
+      --bg:#fff8e6;--panel:#ffffffee;--muted:#64748b;--text:#1f2937;--accent:#fbbf24;--accent2:#fb923c;--good:#16a34a;--bad:#ef4444;--ring:#f59e0b;--soft:#f8fafc;--border:#e5e7eb;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;background:linear-gradient(180deg,var(--bg),#fff);color:var(--text);font:16px/1.5 system-ui,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif}
-    .max{max-width:1100px;margin:0 auto;padding:20px;}
+    .max{max-width:1100px;margin:0 auto;padding:20px;display:flex;flex-direction:column;height:100%;}
     .card{background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 24px #00000010}
     .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
     .grow{flex:1}
     .headline{font-size:clamp(22px,3.2vw,30px);font-weight:900;margin:0}
     .sub{color:var(--muted);font-size:14px}
-
-    /* ▶ 전체 버튼 크게 (유아용 터치) */
-    .btn, .ghost{
-      appearance:none;border:0;border-radius:18px;padding:10px 18px;
-      font-size:18px;font-weight:800;cursor:pointer
-    }
-    header {
-      margin-bottom: 16px; /* 헤더와 메인 화면 사이 간격 */
-    }
+    .btn, .ghost{appearance:none;border:0;border-radius:18px;padding:10px 18px;font-size:18px;font-weight:800;cursor:pointer}
+    header {margin-bottom: 16px;}
     .btn{color:#111827;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 18px #f59e0b33}
     .ghost{background:#fff;color:var(--text);border:1px solid var(--border)}
-
     label{font-size:18px}
-
-    .screen{min-height:70vh;padding:22px}
+    .screen{padding:22px}
     .grid{display:grid;gap:16px}
     
-    /* '자동 맞춤' 그리드로 교체 */
+    /* ✨ FIX: 자동 맞춤 그리드 */
     .g-3 {
-      display: grid;
-      gap: 16px;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
-
-    .thumb{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff}
-    .thumb img{width:100%;height:200px;object-fit:contain;display:block}
-    .thumb small{display:none}
+    
+    /* ✨ FIX: 썸네일 콘텐츠가 그리드 칸에 맞게 커지도록 수정 */
+    .thumb{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff;display:flex;flex-direction:column;}
+    .thumb img{width:100%;flex-grow:1;min-height:0;object-fit:contain;display:block}
     .thumb .ghost{position:absolute;right:12px;bottom:12px;padding:14px 18px;font-size:18px}
 
-    .stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--soft);min-height:380px}
+    .stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--soft);}
     .stage img{width:100%;height:100%;object-fit:contain;display:block}
     
-    /* --- 플레이 화면 레이아웃 개선 --- */
-    #screen-play {
+    /* ✨ FIX: 플레이 화면 레이아웃 및 '유령 화면' 문제 해결 */
+    #screen-play:not([hidden]) {
       display: flex;
       flex-direction: column;
+      flex-grow: 1;
     }
-    #screen-play .stage {
-      flex-grow: 1; /* 남는 공간을 모두 차지 */
-      min-height: 0; /* flex 컨테이너에서 유연하게 줄어들기 위해 필요 */
+    #screen-play:not([hidden]) .stage {
+      flex-grow: 1;
+      min-height: 0;
     }
+
     .hotspot{position:absolute;border:3px dashed var(--ring);border-radius:999px;transform:translate(-50%,-50%);width:72px;height:72px;pointer-events:none;opacity:0;transition:.25s}
     .hotspot.found{border-color:var(--good);box-shadow:0 0 0 6px #16a34a33}
     .ping{position:absolute;inset:0;border-radius:inherit;border:3px solid transparent;animation:ping 1.1s ease-out 2}
@@ -84,11 +64,8 @@
     
     /* --- 반응형 및 전체화면 최종 코드 --- */
     @media (max-width: 480px) {
-      header.row {
-        justify-content: center;
-      }
+      header.row { justify-content: center; }
     }
-    
     .max:fullscreen {
       width: 100%; height: 100%; max-width: none;
       overflow-y: auto; display: flex; flex-direction: column;
@@ -193,55 +170,19 @@ function speak(text){
 <script>
   const CONTENT = {
     easy: [
-      { id:'p-e-1', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png',
-        need:3, spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}] },
-      { id:'p-e-2', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png',
-        need:3, spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}] },
-      { id:'p-e-3', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png',
-        need:3, spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}] }
+      { id:'p-e-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png', need:3, spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}] },
+      { id:'p-e-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png', need:3, spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}] },
+      { id:'p-e-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png', need:3, spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}] }
     ],
     normal:[
-      { id:'p-n-1', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png',
-        need:3, spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}] },
-      { id:'p-n-2', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png',
-        need:3, spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}] },
-      { id:'p-n-3', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png',
-        need:3, spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}] }
+      { id:'p-n-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png', need:3, spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}] },
+      { id:'p-n-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png', need:3, spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}] },
+      { id:'p-n-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png', need:3, spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}] }
     ],
     hard:[
-      { id:'p-h-1', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png',
-        need:3, spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}] },
-      { id:'p-h-2', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png',
-        need:3, spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}] },
-      { id:'p-h-3', title:'',
-        thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png',
-        fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png',
-        orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png',
-        need:3, spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}] }
+      { id:'p-h-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png', need:3, spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}] },
+      { id:'p-h-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png', need:3, spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}] },
+      { id:'p-h-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png', need:3, spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}] }
     ]
   };
 
@@ -256,8 +197,8 @@ function speak(text){
   const $toast = qs('#toast');
   const $confetti = qs('#confetti');
   const $btnAudio = qs('#btn-audio');
-  const $found = qs('#found');
-  const $need = qs('#need');
+  const $foundSpans = qsa('.found-count'); // ✨ FIX: 여러 곳의 카운터를 모두 업데이트하기 위해 qsa 사용
+  const $needSpans = qsa('.need-count');   // ✨ FIX: 여러 곳의 카운터를 모두 업데이트하기 위해 qsa 사용
   const $clock = qs('#clock');
   const $statFound = qs('#stat-found');
   const $statTime = qs('#stat-time');
@@ -269,7 +210,7 @@ function speak(text){
 
   function speak(text){ if(!GLOBAL.audio) return; try{ const u=new SpeechSynthesisUtterance(text); u.lang='ko-KR'; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
   function toast(msg){ $toast.textContent = msg; $toast.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=> $toast.hidden=true, 1400); }
-  function startTimer(){ GLOBAL.startedAt=Date.now(); clearInterval(GLOBAL.timerId); GLOBAL.timerId=setInterval(()=>{ const s=Math.floor((Date.now()-GLOBAL.startedAt)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); $clock.textContent=`${mm}:${ss}`;  },250); }
+  function startTimer(){ GLOBAL.startedAt=Date.now(); clearInterval(GLOBAL.timerId); GLOBAL.timerId=setInterval(()=>{ const s=Math.floor((Date.now()-GLOBAL.startedAt)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); if($clock) $clock.textContent=`${mm}:${ss}`;  },250); }
   function navPlay(on){ $start.hidden=on; $play.hidden=!on; }
 
   qsa('input[name="diff"]').forEach(r=> r.onchange = e=>{ GLOBAL.diff = e.target.value; buildGrid(); });
@@ -289,10 +230,10 @@ function speak(text){
   function startRound(item){
     ROUND = { item, found:new Set(), need:item.need||3, lock:false };
     $result.hidden = true;
-    $playTitle.textContent = `📷 사진 나라의 수상한 단서 찾기: 진짜와 다른 점을 찾아요`;
-    $playCaption.textContent = '단서 3곳을 찾아 클릭하세요. 생성형 AI의 “상상 흔적”에 집중!';
-    qsa('#found').forEach(el => el.textContent = '0');
-    qsa('#need').forEach(el => el.textContent = ROUND.need);
+    $playTitle.textContent = `📷 사진 나라의 수상한 단서 찾기`;
+    $playCaption.textContent = '화면에서 다른 부분을 찾아 클릭하세요!';
+    $foundSpans.forEach(el => el.textContent = '0');
+    $needSpans.forEach(el => el.textContent = ROUND.need);
     $stage.innerHTML='';
     const img = document.createElement('img'); img.src=item.fake; img.alt='플레이 이미지'; $stage.appendChild(img);
     $stage.onclick = (e)=> onStageClick(e);
@@ -303,22 +244,18 @@ function speak(text){
 
   function onStageClick(e){ if(ROUND.lock) return; const rect=$stage.getBoundingClientRect(); const x=((e.clientX-rect.left)/rect.width)*100; const y=((e.clientY-rect.top)/rect.height)*100; if(GLOBAL.dev){ console.log('좌표%',{x:+x.toFixed(2),y:+y.toFixed(2)}); }
     const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) && dist(x,y,h.x,h.y)<= (h.r||6));
-    if(idx>=0){ ROUND.found.add(idx); qsa('#found').forEach(el => el.textContent = ROUND.found.size); GLOBAL.sessionFound++; $statFound.textContent=GLOBAL.sessionFound; ringAt(x,y,true); const msg = randomGood();
-      speak(msg);
-      toast(msg);
+    if(idx>=0){ ROUND.found.add(idx); $foundSpans.forEach(el => el.textContent = ROUND.found.size); GLOBAL.sessionFound++; $statFound.textContent=GLOBAL.sessionFound; ringAt(x,y,true); const msg = randomGood();
+      speak(msg); toast(msg);
       if(ROUND.found.size>=ROUND.need){ onWin(); } }
     else{ ringAt(x,y,false); const msg = randomBad();
-      speak(msg);
-      toast(msg);
+      speak(msg); toast(msg);
     }
   }
   function dist(x1,y1,x2,y2){ const dx=x1-x2, dy=y1-y2; return Math.hypot(dx,dy); }
   function ringAt(px,py,good){
     const m=document.createElement('div');
     m.className='hotspot'+(good?' found':'');
-    m.style.left=px+'%';
-    m.style.top=py+'%';
-    m.style.opacity=1;
+    m.style.left=px+'%'; m.style.top=py+'%'; m.style.opacity=1;
     m.innerHTML='<span class="ping"></span>';
     $stage.appendChild(m);
     if (!good) setTimeout(()=> m.remove(), 1500);
@@ -330,13 +267,10 @@ function speak(text){
     const i=(item.spots||[]).findIndex((_,i)=> !ROUND.found.has(i));
     if(i>=0){
       const h=item.spots[i];
-      const g=document.createElement('div');
-      g.className='hotspot';
-      g.style.left=h.x+'%';
-      g.style.top=h.y+'%';
+      const g=document.createElement('div'); g.className='hotspot';
+      g.style.left=h.x+'%'; g.style.top=h.y+'%';
       g.style.width=g.style.height=(h.r*60)+'px';
-      g.style.opacity=.75;
-      g.style.borderStyle='solid';
+      g.style.opacity=.75; g.style.borderStyle='solid';
       $stage.appendChild(g);
       setTimeout(()=> g.remove(), 1600);
     }
@@ -358,13 +292,10 @@ function speak(text){
     let clickCount = 0;
     let clickTimer = null;
     qs('.headline').onclick = () => {
-      clickCount++;
-      clearTimeout(clickTimer);
+      clickCount++; clearTimeout(clickTimer);
       clickTimer = setTimeout(() => { clickCount = 0; }, 1000); 
-
       if (clickCount >= 5) {
-        GLOBAL.dev = true;
-        clickCount = 0;
+        GLOBAL.dev = true; clickCount = 0;
         toast('✨ 개발자 모드가 활성화되었습니다.');
         console.log('Developer mode ACTIVATED.');
       }
@@ -392,7 +323,7 @@ function speak(text){
         const s=Math.floor((Date.now()-t0)/1000);
         const mm=String(Math.floor(s/60)).padStart(2,'0');
         const ss=String(s%60).padStart(2,'0');
-        $statTime.textContent=`${mm}:${ss}`;
+        if($statTime) $statTime.textContent=`${mm}:${ss}`;
     },1000);
   })();
 </script>
