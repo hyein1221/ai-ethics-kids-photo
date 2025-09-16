@@ -46,12 +46,12 @@ header {
     .grid{display:grid;gap:16px}
     .g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
     .thumb{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff}
-    .thumb img{width:100%;height:200px;object-fit:cover;display:block}
+    .thumb img{width:100%;height:200px;object-fit:contain;display:block} /* cover를 contain으로 변경 */
     .thumb small{display:none}
     .thumb .ghost{position:absolute;right:12px;bottom:12px;padding:14px 18px;font-size:18px}
 
     .stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--soft);min-height:380px}
-    .stage img{width:100%;display:block}
+    .stage img{width:100%;height:100%;object-fit:contain;display:block} /* height와 object-fit 추가 */
     .hotspot{position:absolute;border:3px dashed var(--ring);border-radius:999px;transform:translate(-50%,-50%);width:72px;height:72px;pointer-events:none;opacity:0;transition:.25s}
     .hotspot.found{border-color:var(--good);box-shadow:0 0 0 6px #16a34a33}
     .ping{position:absolute;inset:0;border-radius:inherit;border:3px solid transparent;animation:ping 1.1s ease-out 2}
