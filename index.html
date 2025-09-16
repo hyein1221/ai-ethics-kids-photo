@@ -70,6 +70,8 @@ header {
   <div class="max">
     <header class="row">
   <h1 class="headline">1차시 | 사진 나라의 수상한 단서 찾기: 진짜와 다른 점을 찾아요</h1>
+      header.row { align-items: flex-start; }
+header.row .headline { flex: 0 0 100%; margin-bottom: 6px; } /* h1이 한 줄을 다 먹도록 */
   <span class="pill">찾은 단서: <b id="found">0</b>/<span id="need">0</span></span>
   <span class="grow"></span>
   <button id="btn-audio" class="ghost">🔈 음성 OFF</button>
