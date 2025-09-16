@@ -146,22 +146,76 @@ speechSynthesis.speak(u);
 
   <script>
   const CONTENT = {
-    easy:[
-      { id:'p-e-1', title:'', thumb:'assets/photo/thumbs/e1.jpg', fake:'assets/photo/fake/e1.jpg', orig:'assets/photo/orig/e1.jpg', need:3, hint:'그림자가 사라지거나 방향이 이상한 곳?', spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}] },
-      { id:'p-e-2', title:'', thumb:'assets/photo/thumbs/e2.jpg', fake:'assets/photo/fake/e2.jpg', orig:'assets/photo/orig/e2.jpg', need:3, hint:'손가락 개수를 세어보세요.', spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}] },
-      { id:'p-e-3', title:'', thumb:'assets/photo/thumbs/e3.jpg', fake:'assets/photo/fake/e3.jpg', orig:'assets/photo/orig/e3.jpg', need:3, hint:'경계가 번지거나 끊긴 곳?', spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}] }
-    ],
-    normal:[
-      { id:'p-n-1', title:'', thumb:'assets/photo/thumbs/n1.jpg', fake:'assets/photo/fake/n1.jpg', orig:'assets/photo/orig/n1.jpg', need:3, hint:'사람/사물의 크기 비율이 이상한가요?', spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}] },
-      { id:'p-n-2', title:'', thumb:'assets/photo/thumbs/n2.jpg', fake:'assets/photo/fake/n2.jpg', orig:'assets/photo/orig/n2.jpg', need:3, hint:'거울·유리·물 반사를 주의 깊게.', spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}] },
-      { id:'p-n-3', title:'', thumb:'assets/photo/thumbs/n3.jpg', fake:'assets/photo/fake/n3.jpg', orig:'assets/photo/orig/n3.jpg', need:3, hint:'겹쳐진 부분의 어색한 이어짐.', spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}] }
-    ],
-    hard:[
-      { id:'p-h-1', title:'', thumb:'assets/photo/thumbs/h1.jpg', fake:'assets/photo/fake/h1.jpg', orig:'assets/photo/orig/h1.jpg', need:3, hint:'손·발가락 모양의 세부 특징.', spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}] },
-      { id:'p-h-2', title:'', thumb:'assets/photo/thumbs/h2.jpg', fake:'assets/photo/fake/h2.jpg', orig:'assets/photo/orig/h2.jpg', need:3, hint:'간판·문자 흐트러짐 확인.', spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}] },
-      { id:'p-h-3', title:'', thumb:'assets/photo/thumbs/h3.jpg', fake:'assets/photo/fake/h3.jpg', orig:'assets/photo/orig/h3.jpg', need:3, hint:'빛·그림자·중력 규칙 위반?', spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}] }
-    ]
-  };
+  easy: [
+    {
+      id:'p-e-1', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png',
+      need:3, spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}]
+    },
+    {
+      id:'p-e-2', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png',
+      need:3, spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}]
+    },
+    {
+      id:'p-e-3', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png',
+      need:3, spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}]
+    }
+  ],
+  normal:[
+    {
+      id:'p-n-1', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png',
+      need:3, spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}]
+    },
+    {
+      id:'p-n-2', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png',
+      need:3, spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}]
+    },
+    {
+      id:'p-n-3', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png',
+      need:3, spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}]
+    }
+  ],
+  hard:[
+    {
+      id:'p-h-1', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png',
+      need:3, spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}]
+    },
+    {
+      id:'p-h-2', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png',
+      need:3, spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}]
+    },
+    {
+      id:'p-h-3', title:'',
+      thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png',
+      fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png',
+      orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png',
+      need:3, spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}]
+    }
+  ]
+};
 
   const qs = s=>document.querySelector(s);
   const qsa = s=>[...document.querySelectorAll(s)];
