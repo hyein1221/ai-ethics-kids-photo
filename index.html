@@ -227,18 +227,27 @@
 <div id="confetti" class="confetti" aria-hidden="true"></div>
 
 <script>
+function showCaption(msg){
+  const c = document.getElementById('captions');
+  c.textContent = msg; c.hidden = false;
+  clearTimeout(showCaption._t);
+  showCaption._t = setTimeout(()=> c.hidden = true, 1400);
+}
 function speak(text){
-  if(!GLOBAL.audio) return;
+  if(!GLOBAL.audio) { showCaption(text); return; }
   try{
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR';
-    u.rate = 1; u.pitch = 1.3;
-    const voices = speechSynthesis.getVoices();
-    const ko = voices.find(v => v.lang.startsWith('ko'));
-    if(ko) u.voice = ko;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='ko-KR'; u.rate=1; u.pitch=1.3;
+    const apply = () => {
+      const ko = speechSynthesis.getVoices().find(v=>v.lang.startsWith('ko'));
+      if(ko) u.voice = ko;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+    };
+    if (!speechSynthesis.getVoices().length) {
+      speechSynthesis.onvoiceschanged = apply;
+    } else apply();
   }catch(e){}
+  showCaption(text);
 }
 </script>
 
