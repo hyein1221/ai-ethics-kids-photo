@@ -274,6 +274,23 @@ toast(msg);
   (function init(){
     const t0=Date.now(); setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); $statTime.textContent=`${mm}:${ss}`; },1000);
     buildGrid();
+    // ▼▼▼▼▼ 여기에 '방법 2' 코드를 붙여넣으세요 ▼▼▼▼▼
+    // 방법 2: 헤드라인 5번 클릭하여 개발자 모드 켜기
+    let clickCount = 0;
+    let clickTimer = null;
+    qs('.headline').onclick = () => {
+      clickCount++;
+      clearTimeout(clickTimer);
+      // 1초 안에 다음 클릭이 없으면 횟수를 초기화합니다.
+      clickTimer = setTimeout(() => { clickCount = 0; }, 1000); 
+
+      if (clickCount >= 5) {
+        GLOBAL.dev = true;
+        clickCount = 0; // 다시 0으로 초기화
+        toast('✨ 개발자 모드가 활성화되었습니다.');
+        console.log('Developer mode ACTIVATED.');
+      }
+    };
   })();
   </script>
 </body>
