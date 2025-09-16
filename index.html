@@ -72,7 +72,7 @@ header {
 <h1 class="headline">1차시 | 사진 나라의 수상한 단서 찾기: 진짜와 다른 점을 찾아요 </h1>
 <span class="pill">전체 합계: 찾은 단서 <b id="stat-found">0</b> · 전체 사용 시간 <b id="stat-time">00:00</b></span>
 <span class="grow"></span>
-<button id="btn-audio" class="ghost" title="음성 안내 온/오프">🔈 음성 OFF</button>
+<button id="btn-audio" class="ghost">🖼️ 전체화면</button>  <button id="btn-audio" class="ghost">🔈 음성 OFF</button>
 </header>
 
 
@@ -86,10 +86,9 @@ header {
         <label><input type="radio" name="diff" value="easy" checked> 쉬움</label>
         <label><input type="radio" name="diff" value="normal"> 보통</label>
         <label><input type="radio" name="diff" value="hard"> 어려움</label>
-        <span class="grow"></span>
-        <button id="btn-hint-start" class="ghost">💡 힌트(수동)</button>
-      </div>
-      <div class="grid g-3" id="grid" style="margin-top:16px"></div>
+      <span class="grow"></span>
+    </div>
+    <div class="grid g-3" id="grid" style="margin-top:16px"></div>
     <p class="sub" id="policy-line"><br><br>이 활동은 <b>생성형 AI 이미지</b>에서 사실과 상상을 구분하는 능력을 기를 수 있습니다. <br> 이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다</b>. <br> 공유 시에는 <b>출처 표기와 사실 확인</b>을 확인해주세요.</p>
     </section>
 
@@ -245,7 +244,6 @@ speechSynthesis.speak(u);
   function navPlay(on){ $start.hidden=on; $play.hidden=!on; }
 
   qsa('input[name="diff"]').forEach(r=> r.onchange = e=>{ GLOBAL.diff = e.target.value; buildGrid(); });
-  qs('#btn-hint-start').onclick = ()=> toast('플레이 중 힌트 버튼을 이용하세요.');
   $btnAudio.onclick = ()=>{ GLOBAL.audio = !GLOBAL.audio; $btnAudio.textContent = GLOBAL.audio? '🔊 음성 ON':'🔈 음성 OFF'; };
 
   function buildGrid(){
@@ -328,7 +326,6 @@ toast(msg);
   (function init(){
     const t0=Date.now(); setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); $statTime.textContent=`${mm}:${ss}`; },1000);
     buildGrid();
-    // ▼▼▼▼▼ 여기에 '방법 2' 코드를 붙여넣으세요 ▼▼▼▼▼
     // 방법 2: 헤드라인 5번 클릭하여 개발자 모드 켜기
     let clickCount = 0;
     let clickTimer = null;
@@ -345,6 +342,37 @@ toast(msg);
         console.log('Developer mode ACTIVATED.');
       }
     };
+
+// 1. 필요한 요소들을 가져옵니다.
+const $fullscreenTarget = qs('.max'); // 전체화면으로 만들고 싶은 '하얀 박스'
+const $btnFullscreen = qs('#btn-fullscreen');
+
+// 2. 전체화면을 켜고 끄는 함수를 만듭니다.
+function toggleFullscreen() {
+  // 현재 전체화면 상태가 아니라면
+  if (!document.fullscreenElement) {
+    // 전체화면으로 만듭니다. (브라우저 호환성 고려)
+    if ($fullscreenTarget.requestFullscreen) {
+      $fullscreenTarget.requestFullscreen();
+    } else if ($fullscreenTarget.webkitRequestFullscreen) { /* Safari */
+      $fullscreenTarget.webkitRequestFullscreen();
+    } else if ($fullscreenTarget.msRequestFullscreen) { /* IE11 */
+      $fullscreenTarget.msRequestFullscreen();
+    }
+    $btnFullscreen.textContent = '🖼️ 전체화면 닫기';
+  }
+  // 현재 전체화면 상태라면
+  else {
+    // 전체화면을 종료합니다.
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+    $btnFullscreen.textContent = '🖼️ 전체화면';
+  }
+}
+
+// 3. 버튼에 클릭 이벤트를 연결합니다.
+$btnFullscreen.onclick = toggleFullscreen;
   })();
   </script>
 </body>
