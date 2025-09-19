@@ -1,163 +1,75 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>1차시 | 사진 나라의 수상한 단서 찾기 : 진짜와 다른 점을 찾아요</title>
-  <style>
-    :root{
-      --bg:#fff8e6;--panel:#ffffffee;--muted:#64748b;--text:#1f2937;--accent:#fbbf24;--accent2:#fb923c;--good:#16a34a;--bad:#ef4444;--ring:#f59e0b;--soft:#f8fafc;--border:#e5e7eb;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),#fff);color:var(--text);font:16px/1.5 system-ui,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif}
-    .max{max-width:1100px;margin:0 auto;padding:20px;display:flex;flex-direction:column;height:100%;}
-    .card{background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 24px #00000010}
-    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .grow{flex:1}
-    .headline{font-size:clamp(22px,3.2vw,30px);font-weight:900;margin:0}
-    .sub{color:var(--muted);font-size:14px}
-    .btn, .ghost{appearance:none;border:0;border-radius:18px;padding:10px 18px;font-size:18px;font-weight:800;cursor:pointer}
-    header {margin-bottom: 16px; flex-shrink: 0;}
-    .btn{color:#111827;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 18px #f59e0b33}
-    .ghost{background:#fff;color:var(--text);border:1px solid var(--border)}
-    label{font-size:18px}
-    .screen{padding:22px}
-    .screens-wrapper { flex-grow: 1; min-height: 0; display: flex; flex-direction: column; }
-    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .thumb{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff;display:flex;flex-direction:column;}
-    .thumb img{width:100%;flex-grow:1;min-height:0;object-fit:contain;display:block}
-    .thumb .ghost{position:absolute;right:12px;bottom:12px;padding:14px 18px;font-size:18px}
-    .stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--soft);}
-    .stage img{width:100%;height:100%;object-fit:contain;display:block}
-   #screen-start[hidden],
-#screen-play[hidden] {
-  display: none !important;
-}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1차시 | 사진 나라의 수상한 단서 찾기 : 진짜와 다른 점을 찾아요</title>
+<style>
+  :root{
+    --bg:#fff8e6;--panel:#ffffffee;--muted:#64748b;--text:#1f2937;
+    --accent:#fbbf24;--accent2:#fb923c;--good:#16a34a;--bad:#ef4444;
+    --ring:#f59e0b;--soft:#f8fafc;--border:#e5e7eb;
+  }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:linear-gradient(180deg,var(--bg),#fff);
+       color:var(--text);font:16px/1.5 system-ui,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif}
+  .max{max-width:1100px;margin:0 auto;padding:20px;display:flex;flex-direction:column;height:100%}
+  .card{background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--border);
+        border-radius:18px;box-shadow:0 8px 24px #00000010}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .grow{flex:1}
+  .headline{font-size:clamp(22px,3.2vw,30px);font-weight:900;margin:0}
+  .sub{color:var(--muted);font-size:14px}
+  .btn, .ghost{appearance:none;border:0;border-radius:18px;padding:10px 18px;font-size:18px;font-weight:800;cursor:pointer}
+  header{margin-bottom:16px;flex-shrink:0}
+  .btn{color:#111827;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 18px #f59e0b33}
+  .ghost{background:#fff;color:var(--text);border:1px solid var(--border)}
+  label{font-size:18px}
+  .screen{padding:22px}
+  .screens-wrapper{flex-grow:1;min-height:0;display:flex;flex-direction:column}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .thumb{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff;display:flex;flex-direction:column}
+  .thumb img{width:100%;flex-grow:1;min-height:0;object-fit:contain;display:block}
+  .thumb .ghost{position:absolute;right:12px;bottom:12px;padding:14px 18px;font-size:18px}
+  .stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--soft)}
+  .stage img{width:100%;height:100%;object-fit:contain;display:block}
 
-/* 보일 때만 flex 배치 */
-#screen-play:not([hidden]) { 
-  display: flex; 
-  flex-direction: column; 
-  flex-grow: 1; 
-}
+  #screen-start[hidden], #screen-play[hidden]{display:none !important}
+  #screen-play:not([hidden]){display:flex;flex-direction:column;flex-grow:1}
+  #screen-play:not([hidden]) .stage{flex-grow:1;min-height:0}
 
-#screen-play:not([hidden]) .stage { 
-  flex-grow: 1; 
-  min-height: 0; 
-}
+  /* 단서 원(정답/오답) */
+  .hotspot{position:absolute;border:3px dashed var(--ring);border-radius:999px;transform:translate(-50%,-50%);
+           width:72px;height:72px;pointer-events:none;opacity:0;transition:.25s}
+  .hotspot.found{border-color:var(--good);box-shadow:0 0 0 6px #16a34a33}
+  .ping{position:absolute;inset:0;border-radius:inherit;border:3px solid transparent;animation:ping 1.1s ease-out 2}
+  @keyframes ping{0%{box-shadow:0 0 0 0 #f59e0b55}100%{box-shadow:0 0 0 24px transparent}}
 
-/* 단서 원 표시 */
-.hotspot {
-  position:absolute;
-  border:3px dashed var(--ring);
-  border-radius:999px;
-  transform:translate(-50%,-50%);
-  width:72px; height:72px;
-  pointer-events:none;
-  opacity:0;
-  transition:.25s
-}
-.hotspot.found {
-  border-color:var(--good);
-  box-shadow:0 0 0 6px #16a34a33
-}
-    .ping{position:absolute;inset:0;border-radius:inherit;border:3px solid transparent;animation:ping 1.1s ease-out 2}
-    @keyframes ping{0%{box-shadow:0 0 0 0 #f59e0b55}100%{box-shadow:0 0 0 24px transparent}}
-   .toast{
-      position:fixed;
-      left:50%; bottom:26px;
-      transform:translateX(-50%);
-      background:#111827e6;
-      color:#fff;
-      border:1px solid #00000022;
-      padding:12px 16px;
-      border-radius:14px;
-      font-size:16px;
-      z-index:9999;
-    }
-    .confetti{position:fixed;inset:0;pointer-events:none}
-    .chip{position:absolute;width:10px;height:10px;border-radius:2px;opacity:0;animation:fall 1.2s ease-out forwards}
-    @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}90%{opacity:1}100%{transform:translateY(120vh) rotate(480deg);opacity:0}}
-    .divider{height:1px;background:var(--border);margin:12px 0}
-    .kudos{font-weight:900;color:#111827;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
-    footer{margin-top:18px;text-align:center;color:#6b7280;font-size:13px; flex-shrink: 0;}
-   .difficulty-row { 
-  font-size: clamp(16px, 2.5vw, 20px); 
-}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+         background:#111827e6;color:#fff;border:1px solid #00000022;padding:12px 16px;
+         border-radius:14px;font-size:16px;z-index:9999}
+  .captions{position:fixed;left:50%;top:12px;transform:translateX(-50%);
+            background:#111827e6;color:#fff;padding:8px 12px;border-radius:12px;font-size:15px;z-index:9999}
+  .confetti{position:fixed;inset:0;pointer-events:none}
+  .chip{position:absolute;width:10px;height:10px;border-radius:2px;opacity:0;animation:fall 1.2s ease-out forwards}
+  @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}90%{opacity:1}100%{transform:translateY(120vh) rotate(480deg);opacity:0}}
+  .divider{height:1px;background:var(--border);margin:12px 0}
+  .kudos{font-weight:900;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
+  footer{margin-top:18px;text-align:center;color:#6b7280;font-size:13px;flex-shrink:0}
 
-.max:fullscreen h2 {
-  font-size: clamp(22px, 3vw, 28px);
-}
+  /* 가독성 업: 전체화면에서 폰트/버튼 확대 */
+  .difficulty-row{font-size:clamp(16px,2.5vw,20px)}
+  .max:fullscreen h2{font-size:clamp(22px,3vw,28px)}
+  .max:fullscreen .difficulty-row{justify-content:center;font-size:clamp(22px,3vw,28px)}
+  .max:fullscreen .grid{gap:24px}
+  .max:fullscreen .thumb .ghost{font-size:22px;padding:16px 22px}
 
-.max:fullscreen .difficulty-row {
-  justify-content: center;
-  font-size: clamp(22px, 3vw, 28px);
-}
+  /* 플레이 화면: 스크롤 없이 한 화면에 맞춤 */
+  #screen-play{flex:1;display:flex;flex-direction:column}
+  #screen-play .stage{flex:1;display:flex;align-items:center;justify-content:center;max-height:70vh}
+  #screen-play img{max-width:100%;max-height:100%;object-fit:contain}
 
-.max:fullscreen .grid {
-  gap: 24px;
-}
-
-.max:fullscreen .thumb .ghost {
-  font-size: 22px;
-  padding: 16px 22px;
-}
-
-@media (max-width: 480px) {
-  header.row { justify-content: center; }
-}
-
-.max:fullscreen {
-  width: 100%; height: 100%; max-width: none;
-  overflow-y: auto; display: flex; flex-direction: column;
-  background: var(--bg); 
-}
-
-.max:fullscreen .screens-wrapper {
-  flex-grow: 1; display: flex; flex-direction: column;
-}
-
-.max:fullscreen section[hidden] {
-  display: none !important;
-}
-
-.max:fullscreen .screen {
-  flex-grow: 1; display: flex; flex-direction: column;
-}
-
-.max:fullscreen #screen-start .grid {
-  flex-grow: 1; display: flex; align-items: center;
-}
-
-.max:fullscreen .stage {
-  flex-grow: 1; min-height: 0; display: flex;
-  align-items: center; justify-content: center;
-}
-
-.max:fullscreen .stage img {
-  max-width: 100%; max-height: 100%; object-fit: contain;
-}
-
-#screen-play {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-#screen-play .stage {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 70vh; /* 화면의 70%까지만 */
-}
-
-#screen-play img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
+  @media (max-width:480px){ header.row{justify-content:center} }
 </style>
 </head>
 <body>
@@ -171,55 +83,60 @@
   </header>
 
   <main class="screens-wrapper">
+    <!-- 시작 화면 -->
     <section id="screen-start" class="screen card" role="region" aria-label="시작 화면">
-        <div class="row">
-  <h2 style="margin:0">카테고리 선택</h2>
-  <span class="grow"></span>
-  <button id="btn-reset" class="ghost" title="진행 기록 초기화">처음부터 도전하기</button>
-</div>
+      <div class="row">
+        <h2 style="margin:0">카테고리 선택</h2>
+        <span class="grow"></span>
+        <button id="btn-reset" class="ghost" title="진행 기록 초기화">처음부터 도전하기</button>
+      </div>
 
       <div class="row difficulty-row" style="margin-top:6px">
-<h2 style="margin:0">카테고리 선택</h2>
-<label><input type="radio" name="diff" value="landscape" checked> 풍경</label>
-<label><input type="radio" name="diff" value="animals"> 동물</label>
-<label><input type="radio" name="diff" value="foods"> 음식</label>
-
+        <span class="pill">카테고리</span>
+        <label><input type="radio" name="category" value="landscape" checked> 풍경</label>
+        <label><input type="radio" name="category" value="animal"> 동물</label>
+        <label><input type="radio" name="category" value="food"> 음식</label>
         <span class="grow"></span>
       </div>
 
       <div class="grid" id="grid" style="margin-top:16px"></div>
-      <p class="sub" id="policy-line">
-        ＊ 이 활동은 <b>사진 속 실제와 다른 단서</b>를 찾아보며,  
+
+      <p class="sub" id="policy-line" style="margin-top:12px">
+        ＊ 이 활동은 <b>사진 속 실제와 다른 단서</b>를 찾아보며,
         <b>사진이 실제와 다르게 바뀔 수 있음을 배우고 설명</b>할 수 있도록 돕습니다.<br>
-        ＊ 찾아낸 내용을 통해 비판적으로 생각하는 힘을 기르고,디지털 자료를 사용할 때는 <b>허락받기·확인하기·시간 지키기</b> 약속을 실천합니다.  
-        <br>
-        ＊ 이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다.</b>  <br>
+        ＊ 찾아낸 내용을 통해 비판적으로 생각하는 힘을 기르고, 디지털 자료를 사용할 때는
+        <b>허락받기·확인하기·시간 지키기</b> 약속을 실천합니다.<br>
+        ＊ 이 웹앱은 <b>개인 정보를 수집·저장하지 않습니다.</b><br>
         ＊ 공유할 때에는 반드시 <b>출처 표기와 사실 확인</b>을 함께 지켜주세요.
       </p>
     </section>
 
+    <!-- 플레이 화면 -->
     <section id="screen-play" class="screen card" role="region" aria-label="플레이 화면" hidden>
       <div class="row">
         <h2 id="play-title" style="margin:0">플레이</h2>
         <span class="grow"></span>
         <button id="btn-exit" class="ghost">← 처음 화면으로 돌아가기</button>
       </div>
-      <div class="sub" id="play-caption">화면에서 단서 3곳을 찾아 클릭하세요.</div>
+
+      <div class="sub" id="play-caption">틀린 점 1곳을 찾아 클릭해요!</div>
       <div id="stage" class="stage" tabindex="0" aria-label="단서를 찾는 영역"></div>
+
       <div class="row" style="margin-top:12px">
         <span class="pill">찾은 단서: <b class="found-count">0</b>/<b class="need-count">0</b></span>
         <span class="pill">소요 시간: <b id="clock">00:00</b></span>
         <span class="grow"></span>
         <button id="btn-hint" class="ghost">💡 힌트 보기</button>
       </div>
+
       <div id="result" hidden>
         <div class="divider"></div>
         <h3 class="kudos">🎉 진짜 모습 확인 완료!</h3>
         <p class="sub" id="summary">오늘의 발견:</p>
         <div id="original" class="stage" style="margin-top:10px"></div>
         <div class="row" style="margin-top:12px">
-          <button id="btn-replay" class="btn">다시하기</button>
-          <button id="btn-other" class="ghost">다른 콘텐츠</button>
+          <button id="btn-replay" class="btn" hidden>다시하기</button>
+          <button id="btn-other" class="ghost">다음 단계 →</button>
         </div>
       </div>
     </section>
@@ -228,10 +145,13 @@
   <footer>제작자: 김혜인 · 문의: <a href="mailto:hyein_1221@hanmail.net">hyein_1221@hanmail.net</a></footer>
 </div>
 
+<!-- 음성 자막(전체화면에서도 보이도록 고정) -->
+<div id="captions" class="captions" hidden></div>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 <div id="confetti" class="confetti" aria-hidden="true"></div>
 
 <script>
+/* ---------- 음성 & 자막 ---------- */
 function showCaption(msg){
   const c = document.getElementById('captions');
   c.textContent = msg; c.hidden = false;
@@ -239,346 +159,330 @@ function showCaption(msg){
   showCaption._t = setTimeout(()=> c.hidden = true, 1400);
 }
 function speak(text){
-  if(!GLOBAL.audio) { showCaption(text); return; }
+  if(!GLOBAL.audio){ showCaption(text); return; }
   try{
     const u = new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR'; u.rate=1; u.pitch=1.3;
-    const apply = () => {
+    u.lang='ko-KR'; u.rate=1; u.pitch=1.15;
+    const apply=()=>{
       const ko = speechSynthesis.getVoices().find(v=>v.lang.startsWith('ko'));
       if(ko) u.voice = ko;
       speechSynthesis.cancel(); speechSynthesis.speak(u);
     };
-    if (!speechSynthesis.getVoices().length) {
-      speechSynthesis.onvoiceschanged = apply;
-    } else apply();
+    if(!speechSynthesis.getVoices().length){ speechSynthesis.onvoiceschanged = apply; }
+    else apply();
   }catch(e){}
   showCaption(text);
 }
 </script>
 
 <script>
-   const CONTENT = {
-    // 풍경 카테고리
-    landscape: [
-      { id:'l-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-1.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-1.png', need:1, spots:[{x:47,y:42,r:7}] },
-      { id:'l-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2.png', need:1, spots:[{x:55,y:51,r:7}] },
-      { id:'l-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3.png', need:1, spots:[{x:48,y:35,r:7}] }
-    ],
-
-    // 동물 = 기존 normal 3장
-    animal: [
-      { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png', need:1, spots:[{x:47,y:42,r:7}] },
-      { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png', need:1, spots:[{x:55,y:51,r:7}] },
-      { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png', need:1, spots:[{x:48,y:35,r:7}] }
-    ],
-
-    // 음식 = 기존 hard 3장
-    food: [
-      { id:'f-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png', need:1, spots:[{x:56,y:40,r:7}] },
-      { id:'f-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png', need:1, spots:[{x:49,y:53,r:7}] },
-      { id:'f-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png', need:1, spots:[{x:52,y:62,r:7}] }
-    ]
-  };
+/* ---------- 콘텐츠(이미지 경로 포함) ---------- */
+const CONTENT = {
+  // 풍경(네가 올린 파일 사용)
+  landscape: [
+    { id:'l-1',
+      fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-1.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-1.png',
+      need:1, spots:[{x:47,y:42,r:7}] },
+    { id:'l-2',
+      fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2.png',
+      need:1, spots:[{x:55,y:51,r:7}] },
+    { id:'l-3',
+      fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3.png',
+      need:1, spots:[{x:48,y:35,r:7}] }
+  ],
+  // 동물/음식은 임시로 기존 예시 이미지 유지(원하면 같은 방식으로 교체 가능)
+  animal: [
+    { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png',
+      need:1, spots:[{x:47,y:42,r:7}] },
+    { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png',
+      need:1, spots:[{x:55,y:51,r:7}] },
+    { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png',
+      need:1, spots:[{x:48,y:35,r:7}] }
+  ],
+  food: [
+    { id:'f-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png',
+      need:1, spots:[{x:56,y:40,r:7}] },
+    { id:'f-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png',
+      need:1, spots:[{x:49,y:53,r:7}] },
+    { id:'f-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png',
+      need:1, spots:[{x:52,y:62,r:7}] }
+  ]
+};
 </script>
 
+<script>
+/* ---------- 전역 상태/유틸 ---------- */
+const qs = s=>document.querySelector(s);
+const qsa = s=>[...document.querySelectorAll(s)];
+const $start = qs('#screen-start');
+const $play  = qs('#screen-play');
+const $grid  = qs('#grid');
+const $stage = qs('#stage');
+const $original = qs('#original');
+const $result   = qs('#result');
+const $toast    = qs('#toast');
+const $confetti = qs('#confetti');
+const $btnAudio = qs('#btn-audio');
+const $foundSpans = qsa('.found-count');
+const $needSpans  = qsa('.need-count');
+const $clock = qs('#clock');
+const $statFound = qs('#stat-found');
+const $statTime  = qs('#stat-time');
+const $playTitle = qs('#play-title');
+const $playCaption = qs('#play-caption');
+const $btnReset = qs('#btn-reset');
 
-  const qs = s=>document.querySelector(s);
-  const qsa = s=>[...document.querySelectorAll(s)];
-  const $start = qs('#screen-start');
-  const $play = qs('#screen-play');
-  const $grid = qs('#grid');
-  const $stage = qs('#stage');
-  const $original = qs('#original');
-  const $result = qs('#result');
-  const $toast = qs('#toast');
-  const $confetti = qs('#confetti');
-  const $btnAudio = qs('#btn-audio');
-  const $foundSpans = qsa('.found-count');
-  const $needSpans = qsa('.need-count');
-  const $clock = qs('#clock');
-  const $statFound = qs('#stat-found');
-  const $statTime = qs('#stat-time');
-  const $playTitle = qs('#play-title');
-  const $playCaption = qs('#play-caption');
+let GLOBAL = { category:'landscape', startedAt:0, timerId:null, sessionFound:0, audio:false, dev:false, cleared:{} };
+let ROUND  = { step:0, item:null, found:new Set(), need:0, lock:false };
 
-  let GLOBAL = { category:'landscape', startedAt:0, timerId:null, sessionFound:0, audio:false, dev:false, cleared:{} };
-  let ROUND = { step:0, item:null, found:new Set(), need:0, lock:false };
+const STORAGE_KEY = 'cleared_categories_v1';
+function loadClears(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){ return {}; } }
+function saveClears(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(GLOBAL.cleared||{})); }
 
-  const STORAGE_KEY = 'cleared_categories_v1';
-
-function loadClears(){
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-  catch(e){ return {}; }
-}
-function saveClears(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(GLOBAL.cleared||{}));
-}
-
-/* 라디오에 클리어(✅) 반영/해제 */
 function applyClearsToUI(reset=false){
-  const cats = ['landscape','animal','food'];
-  cats.forEach(cat=>{
+  ['landscape','animal','food'].forEach(cat=>{
     const input = document.querySelector(`input[name="category"][value="${cat}"]`);
     if(!input) return;
-    // 기존 체크 마크 제거
-    input.parentElement.innerHTML = input.parentElement.innerHTML.replace(' ✅','');
-
+    // 라벨 텍스트에서 기존 ✅ 제거 후 다시 반영
+    const label = input.parentElement;
+    label.innerHTML = label.innerHTML.replace(' ✅','');
     if(!reset && GLOBAL.cleared[cat]){
       input.disabled = true;
-      input.parentElement.innerHTML += ' ✅';
+      label.innerHTML += ' ✅';
     }else{
       input.disabled = false;
     }
   });
 }
 
+function speakToast(msg){ speak(msg); toast(msg); }
+function toast(msg){ $toast.textContent=msg; $toast.hidden=false; clearTimeout(toast._t);
+  toast._t=setTimeout(()=> $toast.hidden=true, 1400); }
 
-  function speak(text){ if(!GLOBAL.audio) return; try{ const u=new SpeechSynthesisUtterance(text); u.lang='ko-KR'; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
-  function toast(msg){ $toast.textContent = msg; $toast.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=> $toast.hidden=true, 1400); }
-  function startTimer(){ GLOBAL.startedAt=Date.now(); clearInterval(GLOBAL.timerId); GLOBAL.timerId=setInterval(()=>{ const s=Math.floor((Date.now()-GLOBAL.startedAt)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); if($clock) $clock.textContent=`${mm}:${ss}`;  },250); }
-  function navPlay(on){ $start.hidden=on; $play.hidden=!on; }
+function startTimer(){
+  GLOBAL.startedAt = Date.now();
+  clearInterval(GLOBAL.timerId);
+  GLOBAL.timerId = setInterval(()=>{
+    const s = Math.floor((Date.now()-GLOBAL.startedAt)/1000);
+    const mm=String(Math.floor(s/60)).padStart(2,'0');
+    const ss=String(s%60).padStart(2,'0');
+    if($clock) $clock.textContent=`${mm}:${ss}`;
+  }, 250);
+}
+function navPlay(on){ $start.hidden = on; $play.hidden = !on; }
 
-  qsa('input[name="category"]').forEach(r=> r.onchange = e=>{
-    GLOBAL.category = e.target.value;
-    buildGrid();
-  });
+/* ---------- UI 빌드 & 진행 ---------- */
+qsa('input[name="category"]').forEach(r=>{
+  r.onchange = e=>{ GLOBAL.category = e.target.value; buildGrid(); };
+});
+$btnAudio.onclick = ()=>{
+  GLOBAL.audio = !GLOBAL.audio;
+  $btnAudio.textContent = GLOBAL.audio? '🔊 음성 ON' : '🔈 음성 OFF';
+};
 
-  $btnAudio.onclick = ()=>{ GLOBAL.audio = !GLOBAL.audio; $btnAudio.textContent = GLOBAL.audio? '🔊 음성 ON':'🔈 음성 OFF'; };
-
-   function buildGrid(){
-    $grid.innerHTML='';
-
-    // 카테고리별 대표 썸네일(1단계 fake)을 사용해 "시작" 1장만 보여줌
-    const cat = GLOBAL.category;
-    const items = CONTENT[cat];
-    const first = items[0];
-
-    const d = document.createElement('div');
-    d.className = 'thumb';
-    d.innerHTML = `
-      <img alt="${cat}-thumb" src="${first.fake}" loading="lazy">
-      <button class="ghost">${cat==='landscape'?'풍경':'animal'===cat?'동물':'음식'} 1단계 시작</button>
-    `;
-    d.querySelector('button').onclick = ()=> startCategory(cat);
-    $grid.appendChild(d);
+function buildGrid(){
+  $grid.innerHTML='';
+  const cat = GLOBAL.category;
+  const first = CONTENT[cat][0];
+  const d = document.createElement('div');
+  d.className = 'thumb';
+  const catLabel = (cat==='landscape'?'풍경':cat==='animal'?'동물':'음식');
+  d.innerHTML = `<img alt="${cat}-thumb" src="${first.fake}" loading="lazy">
+                 <button class="ghost">${catLabel} 1단계 시작</button>`;
+  d.querySelector('button').onclick = ()=> startCategory(cat);
   $grid.appendChild(d);
+  applyClearsToUI(); // 새로고침/초기화 반영
+}
 
-  // 라디오에 클리어 상태 반영(새로고침 대비)
-  applyClearsToUI();
+function startCategory(cat){
+  GLOBAL.category = cat;
+  ROUND = { step:0, item:null, found:new Set(), need:0, lock:false };
+  playStep();
+}
 
-    // 이미 클리어한 카테고리는 비활성/마크
-    const input = document.querySelector(`input[name="category"][value="${cat}"]`);
-    if (GLOBAL.cleared[cat] && input && !input.disabled){
-      input.disabled = true;
-      input.parentElement.innerHTML += ' ✅';
-    }
+function playStep(){
+  const items = CONTENT[GLOBAL.category];
+  if(ROUND.step >= items.length){ showCategoryClear(GLOBAL.category); return; }
+
+  const item = items[ROUND.step];
+  ROUND.item = item; ROUND.found=new Set(); ROUND.need=item.need||1; ROUND.lock=false;
+
+  $result.hidden = true;
+  const catLabel = (GLOBAL.category==='landscape'?'풍경':GLOBAL.category==='animal'?'동물':'음식');
+  $playTitle.textContent = `📷 ${catLabel} ${ROUND.step+1}단계`;
+  $playCaption.textContent = '틀린 점 1곳을 찾아 클릭해요!';
+  $foundSpans.forEach(el=> el.textContent='0');
+  $needSpans.forEach(el=> el.textContent=ROUND.need);
+
+  $stage.innerHTML='';
+  const img=document.createElement('img');
+  img.src=item.fake; img.alt='플레이 이미지';
+  $stage.appendChild(img);
+
+  $stage.onclick = onStageClick;
+  qs('#btn-hint').onclick = ()=> showHint(item);
+  qs('#btn-exit').onclick = ()=> navPlay(false);
+
+  startTimer(); navPlay(true);
+}
+
+function onStageClick(e){
+  if(ROUND.lock) return;
+  const rect=$stage.getBoundingClientRect();
+  const x=((e.clientX-rect.left)/rect.width)*100;
+  const y=((e.clientY-rect.top)/rect.height)*100;
+
+  const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) &&
+    Math.hypot(x-h.x,y-h.y) <= (h.r||6));
+
+  if(idx>=0){
+    ROUND.found.add(idx);
+    $foundSpans.forEach(el=> el.textContent = ROUND.found.size);
+    GLOBAL.sessionFound++; $statFound.textContent = GLOBAL.sessionFound;
+    ringAt(x,y,true);
+    speakToast('정답! 잘 찾았어요');
+    if(ROUND.found.size>=ROUND.need){ onWin(); }
+  }else{
+    ringAt(x,y,false); speakToast('괜찮아요, 조금 더 살펴봐요');
   }
+}
+function ringAt(px,py,good){
+  const m=document.createElement('div');
+  m.className='hotspot'+(good?' found':'');
+  m.style.left=px+'%'; m.style.top=py+'%'; m.style.opacity=1;
+  m.innerHTML='<span class="ping"></span>';
+  $stage.appendChild(m);
+  if(!good) setTimeout(()=> m.remove(), 1500);
+}
 
-
-  // 카테고리 플레이 시작 (step=0부터)
-  function startCategory(cat){
-    GLOBAL.category = cat;
-    ROUND = { step:0, item:null, found:new Set(), need:0, lock:false };
-    playStep();
-  }
-
-  // 현재 step의 아이템을 불러와 플레이
-  function playStep(){
-    const items = CONTENT[GLOBAL.category];
-    if (ROUND.step >= items.length){
-      showCategoryClear(GLOBAL.category);
-      return;
-    }
-    const item = items[ROUND.step];
-
-    ROUND.item = item;
-    ROUND.found = new Set();
-    ROUND.need  = item.need || 1;
-    ROUND.lock  = false;
-
-    $result.hidden = true;
-    $playTitle.textContent = `📷 ${GLOBAL.category==='landscape'?'풍경':GLOBAL.category==='animal'?'동물':'음식'} ${ROUND.step+1}단계`;
-    $playCaption.textContent = '틀린 점 1곳을 찾아 클릭해요!';
-    $foundSpans.forEach(el => el.textContent = '0');
-    $needSpans.forEach(el => el.textContent = ROUND.need);
-
-    $stage.innerHTML='';
-    const img = document.createElement('img');
-    img.src = item.fake; img.alt='플레이 이미지';
-    $stage.appendChild(img);
-
-    $stage.onclick = (e)=> onStageClick(e);
-    qs('#btn-hint').onclick = ()=> showHint(item);
-    qs('#btn-exit').onclick = ()=> navPlay(false);
-
-    startTimer(); navPlay(true);
-  }
-
-
-  function onStageClick(e){ if(ROUND.lock) return; const rect=$stage.getBoundingClientRect(); const x=((e.clientX-rect.left)/rect.width)*100; const y=((e.clientY-rect.top)/rect.height)*100; if(GLOBAL.dev){ console.log('좌표%',{x:+x.toFixed(2),y:+y.toFixed(2)}); }
-    const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) && dist(x,y,h.x,h.y)<= (h.r||6));
-    if(idx>=0){ ROUND.found.add(idx); $foundSpans.forEach(el => el.textContent = ROUND.found.size); GLOBAL.sessionFound++; $statFound.textContent=GLOBAL.sessionFound; ringAt(x,y,true); const msg = randomGood();
-      speak(msg); toast(msg);
-      if(ROUND.found.size>=ROUND.need){ onWin(); } }
-    else{ ringAt(x,y,false); const msg = randomBad();
-      speak(msg); toast(msg);
-    }
-  }
-  function dist(x1,y1,x2,y2){ const dx=x1-x2, dy=y1-y2; return Math.hypot(dx,dy); }
-  function ringAt(px,py,good){
-    const m=document.createElement('div');
-    m.className='hotspot'+(good?' found':'');
-    m.style.left=px+'%'; m.style.top=py+'%'; m.style.opacity=1;
-    m.innerHTML='<span class="ping"></span>';
-    $stage.appendChild(m);
-    if (!good) setTimeout(()=> m.remove(), 1500);
-  }
-
-  function showHint(item){
-    const msg = '여기를 조금 더 살펴볼까요?';
-    toast(msg); speak(msg);
-    const i=(item.spots||[]).findIndex((_,i)=> !ROUND.found.has(i));
-    if(i>=0){
-      const h=item.spots[i];
-      const g=document.createElement('div'); g.className='hotspot';
-      g.style.left=h.x+'%'; g.style.top=h.y+'%';
-      g.style.width=g.style.height=(h.r*60)+'px';
-      g.style.opacity=.75; g.style.borderStyle='solid';
-      $stage.appendChild(g);
-      setTimeout(()=> g.remove(), 1600);
-    }
-  }
-
-   function onWin(){
-    ROUND.lock = true;
-    clearInterval(GLOBAL.timerId);
-    confetti();
-    $result.hidden = false;
-
-    const elapsed = $clock.textContent;
-    qs('#summary').textContent = `오늘의 발견: ${ROUND.step+1}단계 단서 ${ROUND.need}개를 ${elapsed} 만에 찾았어요!`;
-
-    $original.innerHTML='';
-    const img = document.createElement('img');
-    img.src = ROUND.item.orig; img.alt = '원본 사진';
-    $original.appendChild(img);
-
-    // 다음 단계 / 홈으로
-    const last = ROUND.step >= CONTENT[GLOBAL.category].length - 1;
-
-    qs('#btn-replay').hidden = true; // 단계식이므로 다시하기 버튼 감춤
-    const $next = qs('#btn-other');
-    $next.textContent = last ? '홈으로' : '다음 단계 →';
-    $next.onclick = ()=>{
-      if (last){
-        showCategoryClear(GLOBAL.category);
-        navPlay(false);
-      } else {
-        ROUND.step += 1;
-        $result.hidden = true;
-        playStep();
-      }
-       function showCategoryClear(cat){
-  GLOBAL.cleared[cat] = true;
-  saveClears();           // ← 저장
-  applyClearsToUI();      // ← UI 반영
-
-  toast(`${cat==='landscape'?'풍경':cat==='animal'?'동물':'음식'} 참 잘했어요 👏`, 1600);
-  speak('참 잘했어요!');
-
-  // 아직 안 깬 카테고리가 있으면 자동 전환
-  const order = ['landscape','animal','food'];
-  const next = order.find(c => !GLOBAL.cleared[c]);
-  if(next){
-    // 다음 카테고리를 기본 선택으로
-    GLOBAL.category = next;
-    const r = document.querySelector(`input[name="category"][value="${next}"]`);
-    if(r){ r.checked = true; }
-    buildGrid();
+function showHint(item){
+  const msg='여기를 조금 더 살펴볼까요?';
+  speakToast(msg);
+  const i=(item.spots||[]).findIndex((_,i)=> !ROUND.found.has(i));
+  if(i>=0){
+    const h=item.spots[i];
+    const g=document.createElement('div'); g.className='hotspot';
+    g.style.left=h.x+'%'; g.style.top=h.y+'%';
+    g.style.width=g.style.height=(h.r*60)+'px';
+    g.style.opacity=.75; g.style.borderStyle='solid';
+    $stage.appendChild(g);
+    setTimeout(()=> g.remove(), 1600);
   }
 }
 
+function onWin(){
+  ROUND.lock=true; clearInterval(GLOBAL.timerId); confetti();
+  $result.hidden=false;
+  const elapsed=$clock.textContent;
+  qs('#summary').textContent = `오늘의 발견: ${ROUND.step+1}단계 단서 ${ROUND.need}개를 ${elapsed} 만에 찾았어요!`;
 
-    };
+  $original.innerHTML='';
+  const img=document.createElement('img');
+  img.src=ROUND.item.orig; img.alt='원본 사진';
+  $original.appendChild(img);
 
-    speak(last ? '진짜 모습 확인 완료! 전부 다 찾았어요!' : '진짜 모습 확인 완료! 다음 단계로 가볼까요?');
+  const last = ROUND.step >= CONTENT[GLOBAL.category].length-1;
+  const $next = qs('#btn-other');
+  $next.textContent = last ? '홈으로' : '다음 단계 →';
+  $next.onclick = ()=>{
+    if(last){ showCategoryClear(GLOBAL.category); navPlay(false); }
+    else { ROUND.step += 1; $result.hidden=true; playStep(); }
+  };
+
+  speak(last ? '진짜 모습 확인 완료! 전부 다 찾았어요!' : '진짜 모습 확인 완료! 다음 단계로 가볼까요?');
+}
+
+function showCategoryClear(cat){
+  GLOBAL.cleared[cat] = true; saveClears(); applyClearsToUI();
+  const label = (cat==='landscape'?'풍경':cat==='animal'?'동물':'음식');
+  speakToast(`${label} 클리어! 참 잘했어요 👏`);
+
+  // 다음 미클리어 카테고리로 자동 선택
+  const order=['landscape','animal','food'];
+  const next = order.find(c=>!GLOBAL.cleared[c]);
+  if(next){
+    GLOBAL.category = next;
+    const r = document.querySelector(`input[name="category"][value="${next}"]`);
+    if(r) r.checked = true;
   }
+  buildGrid();
+}
 
+/* ---------- 이펙트/보조 ---------- */
+function confetti(){
+  $confetti.innerHTML='';
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div'); c.className='chip';
+    c.style.left=Math.random()*100+'%';
+    c.style.top=(Math.random()*-20)+'px';
+    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
+    c.style.animationDelay=(Math.random()*0.6)+'s';
+    c.style.animationDuration=(0.8+Math.random()*0.8)+'s';
+    $confetti.appendChild(c);
+  }
+}
+function randomGood(){return ['정답! 잘 찾았어요','멋진 탐정이에요','정확해요! 좋은 관찰이에요'][Math.floor(Math.random()*3)]}
+function randomBad(){return ['괜찮아요, 조금 더 살펴봐요','다른 곳도 있을 수 있어요','천천히 다시 볼까요?'][Math.floor(Math.random()*3)]}
 
-  function confetti(){ $confetti.innerHTML=''; const n=80; for(let i=0;i<n;i++){ const c=document.createElement('div'); c.className='chip'; c.style.left=Math.random()*100+'%'; c.style.top=(Math.random()*-20)+'px'; c.style.background=`hsl(${Math.random()*360},80%,60%)`; c.style.animationDelay=(Math.random()*0.6)+'s'; c.style.animationDuration=(0.8+Math.random()*0.8)+'s'; $confetti.appendChild(c); } }
-  function randomGood(){ return pick(['정답! 잘 찾았어요','멋진 탐정이에요','정확해요! 좋은 관찰이에요']); }
-  function randomBad(){ return pick(['괜찮아요, 조금 더 살펴봐요','다른 곳도 있을 수 있어요','천천히 다시 볼까요?']); }
-  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-  (function init(){
+/* ---------- 초기화/전체화면/세션타이머 ---------- */
+(function init(){
   // 클리어 상태 복원
   GLOBAL.cleared = loadClears();
   applyClearsToUI();
-
   buildGrid();
-  ...
-  // 전체화면 코드 그대로 유지
 
-  // 세션 타이머 유지 코드 그대로 유지
+  // 개발자 모드(헤드라인 5연속 클릭)
+  let clickCount=0, clickTimer=null;
+  qs('.headline').onclick = ()=>{
+    clickCount++; clearTimeout(clickTimer);
+    clickTimer=setTimeout(()=>clickCount=0,1000);
+    if(clickCount>=5){ GLOBAL.dev=true; clickCount=0; toast('✨ 개발자 모드 ON'); }
+  };
 
-  // ★ 초기화 버튼
-  const $btnReset = document.getElementById('btn-reset');
+  // 전체화면
+  const $fullscreenTarget = qs('.max');
+  qs('#btn-fullscreen').onclick = ()=>{
+    if(!document.fullscreenElement){
+      ($fullscreenTarget.requestFullscreen||$fullscreenTarget.webkitRequestFullscreen||$fullscreenTarget.msRequestFullscreen).call($fullscreenTarget);
+      qs('#btn-fullscreen').textContent='🖼️ 전체화면 닫기';
+    }else{
+      document.exitFullscreen && document.exitFullscreen();
+      qs('#btn-fullscreen').textContent='🖼️ 전체화면';
+    }
+  };
+
+  // 화면 상단 전체 사용 시간(세션 유지)
+  let t0 = sessionStorage.getItem('sessionStartTime');
+  if(!t0){ t0=Date.now(); sessionStorage.setItem('sessionStartTime', t0); }
+  setInterval(()=>{
+    const s=Math.floor((Date.now()-t0)/1000);
+    const mm=String(Math.floor(s/60)).padStart(2,'0');
+    const ss=String(s%60).padStart(2,'0');
+    if($statTime) $statTime.textContent=`${mm}:${ss}`;
+  },1000);
+
+  // “처음부터 도전하기”
   if($btnReset){
     $btnReset.onclick = ()=>{
       localStorage.removeItem(STORAGE_KEY);
-      GLOBAL.cleared = {};
-      applyClearsToUI(true);
-      // 기본 카테고리로 리셋 후 그리드 갱신
-      GLOBAL.category = 'landscape';
-      const firstRadio = document.querySelector(`input[name="category"][value="landscape"]`);
-      if(firstRadio){ firstRadio.checked = true; }
+      GLOBAL.cleared = {}; applyClearsToUI(true);
+      GLOBAL.category='landscape';
+      const r=document.querySelector('input[name="category"][value="landscape"]');
+      if(r) r.checked = true;
       buildGrid();
-      toast('진행 기록이 초기화되었습니다.');
-      speak('처음부터 다시 도전해요!');
-    // Developer mode
-    let clickCount = 0;
-    let clickTimer = null;
-    qs('.headline').onclick = () => {
-      clickCount++; clearTimeout(clickTimer);
-      clickTimer = setTimeout(() => { clickCount = 0; }, 1000); 
-      if (clickCount >= 5) {
-        GLOBAL.dev = true; clickCount = 0;
-        toast('✨ 개발자 모드가 활성화되었습니다.');
-        console.log('Developer mode ACTIVATED.');
-      }
+      speakToast('진행 기록이 초기화되었습니다. 처음부터 다시 도전해요!');
     };
-
-    // Fullscreen
-    const $fullscreenTarget = qs('.max');
-    const $btnFullscreen = qs('#btn-fullscreen');
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        if ($fullscreenTarget.requestFullscreen) { $fullscreenTarget.requestFullscreen();
-        } else if ($fullscreenTarget.webkitRequestFullscreen) { $fullscreenTarget.webkitRequestFullscreen();
-        } else if ($fullscreenTarget.msRequestFullscreen) { $fullscreenTarget.msRequestFullscreen(); }
-        $btnFullscreen.textContent = '🖼️ 전체화면 닫기';
-      } else {
-        if (document.exitFullscreen) { document.exitFullscreen(); }
-        $btnFullscreen.textContent = '🖼️ 전체화면';
-      }
-    }
-    $btnFullscreen.onclick = toggleFullscreen;
-
-   // Session timer
-    // ✨ FIX: sessionStorage를 사용해 새로고침해도 시간 유지
-    let t0 = sessionStorage.getItem('sessionStartTime');
-    if (!t0) {
-      t0 = Date.now();
-      sessionStorage.setItem('sessionStartTime', t0);
-    }
-
-    setInterval(()=>{
-        const s=Math.floor((Date.now()-t0)/1000);
-        const mm=String(Math.floor(s/60)).padStart(2,'0');
-        const ss=String(s%60).padStart(2,'0');
-        if($statTime) $statTime.textContent=`${mm}:${ss}`;
-    },1000);
-  })();
+  }
+})();
 </script>
 </body>
 </html>
