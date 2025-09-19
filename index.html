@@ -172,9 +172,12 @@
 
   <main class="screens-wrapper">
     <section id="screen-start" class="screen card" role="region" aria-label="시작 화면">
-           <div class="row">
-        <h2 style="margin:0">카테고리 선택</h2>
-      </div>
+        <div class="row">
+  <h2 style="margin:0">카테고리 선택</h2>
+  <span class="grow"></span>
+  <button id="btn-reset" class="ghost" title="진행 기록 초기화">처음부터 도전하기</button>
+</div>
+
       <div class="row difficulty-row" style="margin-top:6px">
 <h2 style="margin:0">카테고리 선택</h2>
 <label><input type="radio" name="diff" value="landscape" checked> 풍경</label>
@@ -255,18 +258,16 @@ function speak(text){
 
 <script>
    const CONTENT = {
-    // 풍경 = 기존 easy 3장 (각 단계 1개만 찾기)
-   const CONTENT = {
     animal: [
       { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-1.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-1.png', need:1, spots:[{x:47,y:42,r:7}] },
-      { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2', need:1, spots:[{x:55,y:51,r:7}] },
-      { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3', need:1, spots:[{x:48,y:35,r:7}] }
+      { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2.png', need:1, spots:[{x:55,y:51,r:7}] },
+      { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3.png', need:1, spots:[{x:48,y:35,r:7}] }
     ],
     // 동물 = 기존 normal 3장
     animal: [
       { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-1.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-1.png', need:1, spots:[{x:47,y:42,r:7}] },
-      { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2', need:1, spots:[{x:55,y:51,r:7}] },
-      { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3', need:1, spots:[{x:48,y:35,r:7}] }
+      { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2.png', need:1, spots:[{x:55,y:51,r:7}] },
+      { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3.png', need:1, spots:[{x:48,y:35,r:7}] }
     ],
     // 음식 = 기존 hard 3장
     food: [
@@ -298,6 +299,34 @@ function speak(text){
   let GLOBAL = { category:'landscape', startedAt:0, timerId:null, sessionFound:0, audio:false, dev:false, cleared:{} };
   let ROUND = { step:0, item:null, found:new Set(), need:0, lock:false };
 
+  const STORAGE_KEY = 'cleared_categories_v1';
+
+function loadClears(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch(e){ return {}; }
+}
+function saveClears(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(GLOBAL.cleared||{}));
+}
+
+/* 라디오에 클리어(✅) 반영/해제 */
+function applyClearsToUI(reset=false){
+  const cats = ['landscape','animal','food'];
+  cats.forEach(cat=>{
+    const input = document.querySelector(`input[name="category"][value="${cat}"]`);
+    if(!input) return;
+    // 기존 체크 마크 제거
+    input.parentElement.innerHTML = input.parentElement.innerHTML.replace(' ✅','');
+
+    if(!reset && GLOBAL.cleared[cat]){
+      input.disabled = true;
+      input.parentElement.innerHTML += ' ✅';
+    }else{
+      input.disabled = false;
+    }
+  });
+}
+
 
   function speak(text){ if(!GLOBAL.audio) return; try{ const u=new SpeechSynthesisUtterance(text); u.lang='ko-KR'; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
   function toast(msg){ $toast.textContent = msg; $toast.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=> $toast.hidden=true, 1400); }
@@ -327,6 +356,10 @@ function speak(text){
     `;
     d.querySelector('button').onclick = ()=> startCategory(cat);
     $grid.appendChild(d);
+  $grid.appendChild(d);
+
+  // 라디오에 클리어 상태 반영(새로고침 대비)
+  applyClearsToUI();
 
     // 이미 클리어한 카테고리는 비활성/마크
     const input = document.querySelector(`input[name="category"][value="${cat}"]`);
@@ -440,19 +473,26 @@ function speak(text){
         $result.hidden = true;
         playStep();
       }
-        function showCategoryClear(cat){
-    GLOBAL.cleared[cat] = true;
-    // 라디오 비활성 + 체크 마크
-    const input = document.querySelector(`input[name="category"][value="${cat}"]`);
-    if (input){
-      input.disabled = true;
-      if (!/✅/.test(input.parentElement.innerHTML)){
-        input.parentElement.innerHTML += ' ✅';
-      }
-    }
-    toast(`${cat==='landscape'?'풍경':cat==='animal'?'동물':'음식'} 참 잘했어요 👏`, 1600);
-    speak('참 잘했어요!');
+       function showCategoryClear(cat){
+  GLOBAL.cleared[cat] = true;
+  saveClears();           // ← 저장
+  applyClearsToUI();      // ← UI 반영
+
+  toast(`${cat==='landscape'?'풍경':cat==='animal'?'동물':'음식'} 참 잘했어요 👏`, 1600);
+  speak('참 잘했어요!');
+
+  // 아직 안 깬 카테고리가 있으면 자동 전환
+  const order = ['landscape','animal','food'];
+  const next = order.find(c => !GLOBAL.cleared[c]);
+  if(next){
+    // 다음 카테고리를 기본 선택으로
+    GLOBAL.category = next;
+    const r = document.querySelector(`input[name="category"][value="${next}"]`);
+    if(r){ r.checked = true; }
+    buildGrid();
   }
+}
+
 
     };
 
@@ -466,8 +506,30 @@ function speak(text){
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
   (function init(){
-    buildGrid();
-    
+  // 클리어 상태 복원
+  GLOBAL.cleared = loadClears();
+  applyClearsToUI();
+
+  buildGrid();
+  ...
+  // 전체화면 코드 그대로 유지
+
+  // 세션 타이머 유지 코드 그대로 유지
+
+  // ★ 초기화 버튼
+  const $btnReset = document.getElementById('btn-reset');
+  if($btnReset){
+    $btnReset.onclick = ()=>{
+      localStorage.removeItem(STORAGE_KEY);
+      GLOBAL.cleared = {};
+      applyClearsToUI(true);
+      // 기본 카테고리로 리셋 후 그리드 갱신
+      GLOBAL.category = 'landscape';
+      const firstRadio = document.querySelector(`input[name="category"][value="landscape"]`);
+      if(firstRadio){ firstRadio.checked = true; }
+      buildGrid();
+      toast('진행 기록이 초기화되었습니다.');
+      speak('처음부터 다시 도전해요!');
     // Developer mode
     let clickCount = 0;
     let clickTimer = null;
