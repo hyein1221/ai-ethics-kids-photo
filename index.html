@@ -172,16 +172,17 @@
 
   <main class="screens-wrapper">
     <section id="screen-start" class="screen card" role="region" aria-label="시작 화면">
-      <div class="row">
-        <h2 style="margin:0">난이도 선택</h2>
+           <div class="row">
+        <h2 style="margin:0">카테고리 선택</h2>
       </div>
       <div class="row difficulty-row" style="margin-top:6px">
-        <span class="pill">난이도</span>
-        <label><input type="radio" name="diff" value="easy" checked> 쉬움</label>
-        <label><input type="radio" name="diff" value="normal"> 보통</label>
-        <label><input type="radio" name="diff" value="hard"> 어려움</label>
+        <span class="pill">카테고리</span>
+        <label><input type="radio" name="category" value="landscape" checked> 풍경</label>
+        <label><input type="radio" name="category" value="animal"> 동물</label>
+        <label><input type="radio" name="category" value="food"> 음식</label>
         <span class="grow"></span>
       </div>
+
       <div class="grid" id="grid" style="margin-top:16px"></div>
       <p class="sub" id="policy-line">
         ＊ 이 활동은 <b>사진 속 실제와 다른 단서</b>를 찾아보며,  
@@ -252,23 +253,27 @@ function speak(text){
 </script>
 
 <script>
-  const CONTENT = {
-  easy: [
-    { id:'p-e-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png', need:3, spots:[{x:24,y:36,r:6},{x:52,y:62,r:6},{x:78,y:28,r:6}] },
-    { id:'p-e-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png', need:3, spots:[{x:30,y:48,r:6},{x:61,y:50,r:6},{x:82,y:70,r:6}] },
-    { id:'p-e-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png', need:3, spots:[{x:22,y:24,r:6},{x:50,y:58,r:6},{x:76,y:44,r:6}] }
-  ],
-  normal:[
-    { id:'p-n-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png', need:3, spots:[{x:18,y:36,r:5},{x:47,y:42,r:5},{x:79,y:63,r:5}] },
-    { id:'p-n-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png', need:3, spots:[{x:26,y:33,r:5},{x:55,y:51,r:5},{x:80,y:22,r:5}] },
-    { id:'p-n-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png', need:3, spots:[{x:20,y:60,r:5},{x:48,y:35,r:5},{x:75,y:48,r:5}] }
-  ],
-  hard:[
-    { id:'p-h-1', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png', need:3, spots:[{x:24,y:44,r:5},{x:56,y:40,r:5},{x:81,y:64,r:5}] },
-    { id:'p-h-2', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png', need:3, spots:[{x:28,y:28,r:5},{x:49,y:53,r:5},{x:70,y:34,r:5}] },
-    { id:'p-h-3', title:'', thumb:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', fake: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', orig: 'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png', need:3, spots:[{x:22,y:22,r:5},{x:52,y:62,r:5},{x:78,y:30,r:5}] }
-  ]
-};
+   const CONTENT = {
+    // 풍경 = 기존 easy 3장 (각 단계 1개만 찾기)
+    landscape: [
+      { id:'l-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy1-orig.png', need:1, spots:[{x:24,y:36,r:8}] },
+      { id:'l-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy2-orig.png', need:1, spots:[{x:61,y:50,r:8}] },
+      { id:'l-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/easy3-orig.png', need:1, spots:[{x:50,y:58,r:8}] }
+    ],
+    // 동물 = 기존 normal 3장
+    animal: [
+      { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png', need:1, spots:[{x:47,y:42,r:7}] },
+      { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png', need:1, spots:[{x:55,y:51,r:7}] },
+      { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png', need:1, spots:[{x:48,y:35,r:7}] }
+    ],
+    // 음식 = 기존 hard 3장
+    food: [
+      { id:'f-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png', need:1, spots:[{x:56,y:40,r:7}] },
+      { id:'f-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png', need:1, spots:[{x:49,y:53,r:7}] },
+      { id:'f-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png', orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png', need:1, spots:[{x:52,y:62,r:7}] }
+    ]
+  };
+
   const qs = s=>document.querySelector(s);
   const qsa = s=>[...document.querySelectorAll(s)];
   const $start = qs('#screen-start');
@@ -288,42 +293,87 @@ function speak(text){
   const $playTitle = qs('#play-title');
   const $playCaption = qs('#play-caption');
 
-  let GLOBAL = { diff:'easy', startedAt:0, timerId:null, sessionFound:0, audio:false, dev:false };
-  let ROUND = { item:null, found:new Set(), need:0, lock:false };
+  let GLOBAL = { category:'landscape', startedAt:0, timerId:null, sessionFound:0, audio:false, dev:false, cleared:{} };
+  let ROUND = { step:0, item:null, found:new Set(), need:0, lock:false };
+
 
   function speak(text){ if(!GLOBAL.audio) return; try{ const u=new SpeechSynthesisUtterance(text); u.lang='ko-KR'; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
   function toast(msg){ $toast.textContent = msg; $toast.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=> $toast.hidden=true, 1400); }
   function startTimer(){ GLOBAL.startedAt=Date.now(); clearInterval(GLOBAL.timerId); GLOBAL.timerId=setInterval(()=>{ const s=Math.floor((Date.now()-GLOBAL.startedAt)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); if($clock) $clock.textContent=`${mm}:${ss}`;  },250); }
   function navPlay(on){ $start.hidden=on; $play.hidden=!on; }
 
-  qsa('input[name="diff"]').forEach(r=> r.onchange = e=>{ GLOBAL.diff = e.target.value; buildGrid(); });
+  qsa('input[name="category"]').forEach(r=> r.onchange = e=>{
+    GLOBAL.category = e.target.value;
+    buildGrid();
+  });
+
   $btnAudio.onclick = ()=>{ GLOBAL.audio = !GLOBAL.audio; $btnAudio.textContent = GLOBAL.audio? '🔊 음성 ON':'🔈 음성 OFF'; };
 
-  function buildGrid(){
+   function buildGrid(){
     $grid.innerHTML='';
-    const list = CONTENT[GLOBAL.diff];
-    list.forEach(item=>{
-      const d=document.createElement('div'); d.className='thumb';
-      d.innerHTML=`<img alt="thumb" src="${item.thumb}" loading="lazy"><button class="ghost">시작</button>`;
-      d.querySelector('button').onclick=()=> startRound(item);
-      $grid.appendChild(d);
-    });
+
+    // 카테고리별 대표 썸네일(1단계 fake)을 사용해 "시작" 1장만 보여줌
+    const cat = GLOBAL.category;
+    const items = CONTENT[cat];
+    const first = items[0];
+
+    const d = document.createElement('div');
+    d.className = 'thumb';
+    d.innerHTML = `
+      <img alt="${cat}-thumb" src="${first.fake}" loading="lazy">
+      <button class="ghost">${cat==='landscape'?'풍경':'animal'===cat?'동물':'음식'} 1단계 시작</button>
+    `;
+    d.querySelector('button').onclick = ()=> startCategory(cat);
+    $grid.appendChild(d);
+
+    // 이미 클리어한 카테고리는 비활성/마크
+    const input = document.querySelector(`input[name="category"][value="${cat}"]`);
+    if (GLOBAL.cleared[cat] && input && !input.disabled){
+      input.disabled = true;
+      input.parentElement.innerHTML += ' ✅';
+    }
   }
 
-  function startRound(item){
-    ROUND = { item, found:new Set(), need:item.need||3, lock:false };
+
+  // 카테고리 플레이 시작 (step=0부터)
+  function startCategory(cat){
+    GLOBAL.category = cat;
+    ROUND = { step:0, item:null, found:new Set(), need:0, lock:false };
+    playStep();
+  }
+
+  // 현재 step의 아이템을 불러와 플레이
+  function playStep(){
+    const items = CONTENT[GLOBAL.category];
+    if (ROUND.step >= items.length){
+      showCategoryClear(GLOBAL.category);
+      return;
+    }
+    const item = items[ROUND.step];
+
+    ROUND.item = item;
+    ROUND.found = new Set();
+    ROUND.need  = item.need || 1;
+    ROUND.lock  = false;
+
     $result.hidden = true;
-    $playTitle.textContent = `📷 사진 나라의 수상한 단서 찾기`;
-    $playCaption.textContent = '화면에서 다른 부분을 찾아 클릭하세요!';
+    $playTitle.textContent = `📷 ${GLOBAL.category==='landscape'?'풍경':GLOBAL.category==='animal'?'동물':'음식'} ${ROUND.step+1}단계`;
+    $playCaption.textContent = '틀린 점 1곳을 찾아 클릭해요!';
     $foundSpans.forEach(el => el.textContent = '0');
     $needSpans.forEach(el => el.textContent = ROUND.need);
+
     $stage.innerHTML='';
-    const img = document.createElement('img'); img.src=item.fake; img.alt='플레이 이미지'; $stage.appendChild(img);
+    const img = document.createElement('img');
+    img.src = item.fake; img.alt='플레이 이미지';
+    $stage.appendChild(img);
+
     $stage.onclick = (e)=> onStageClick(e);
     qs('#btn-hint').onclick = ()=> showHint(item);
     qs('#btn-exit').onclick = ()=> navPlay(false);
+
     startTimer(); navPlay(true);
   }
+
 
   function onStageClick(e){ if(ROUND.lock) return; const rect=$stage.getBoundingClientRect(); const x=((e.clientX-rect.left)/rect.width)*100; const y=((e.clientY-rect.top)/rect.height)*100; if(GLOBAL.dev){ console.log('좌표%',{x:+x.toFixed(2),y:+y.toFixed(2)}); }
     const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) && dist(x,y,h.x,h.y)<= (h.r||6));
@@ -359,9 +409,54 @@ function speak(text){
     }
   }
 
-  function onWin(){ ROUND.lock=true; clearInterval(GLOBAL.timerId); confetti(); $result.hidden=false; const elapsed=$clock.textContent; qs('#summary').textContent=`오늘의 발견: 단서 ${ROUND.need}개를 ${elapsed} 만에 찾았어요!`;
-    $original.innerHTML=''; const img=document.createElement('img'); img.src=ROUND.item.orig; img.alt='원본 사진'; $original.appendChild(img);
-    qs('#btn-replay').onclick=()=> startRound(ROUND.item); qs('#btn-other').onclick=()=> navPlay(false); speak('진짜 모습 확인 완료! 멋진 탐정이에요.'); }
+   function onWin(){
+    ROUND.lock = true;
+    clearInterval(GLOBAL.timerId);
+    confetti();
+    $result.hidden = false;
+
+    const elapsed = $clock.textContent;
+    qs('#summary').textContent = `오늘의 발견: ${ROUND.step+1}단계 단서 ${ROUND.need}개를 ${elapsed} 만에 찾았어요!`;
+
+    $original.innerHTML='';
+    const img = document.createElement('img');
+    img.src = ROUND.item.orig; img.alt = '원본 사진';
+    $original.appendChild(img);
+
+    // 다음 단계 / 홈으로
+    const last = ROUND.step >= CONTENT[GLOBAL.category].length - 1;
+
+    qs('#btn-replay').hidden = true; // 단계식이므로 다시하기 버튼 감춤
+    const $next = qs('#btn-other');
+    $next.textContent = last ? '홈으로' : '다음 단계 →';
+    $next.onclick = ()=>{
+      if (last){
+        showCategoryClear(GLOBAL.category);
+        navPlay(false);
+      } else {
+        ROUND.step += 1;
+        $result.hidden = true;
+        playStep();
+      }
+        function showCategoryClear(cat){
+    GLOBAL.cleared[cat] = true;
+    // 라디오 비활성 + 체크 마크
+    const input = document.querySelector(`input[name="category"][value="${cat}"]`);
+    if (input){
+      input.disabled = true;
+      if (!/✅/.test(input.parentElement.innerHTML)){
+        input.parentElement.innerHTML += ' ✅';
+      }
+    }
+    toast(`${cat==='landscape'?'풍경':cat==='animal'?'동물':'음식'} 마스터! 참 잘했어요 👏`, 1600);
+    speak('참 잘했어요! 카테고리 마스터!');
+  }
+
+    };
+
+    speak(last ? '진짜 모습 확인 완료! 카테고리 클리어!' : '진짜 모습 확인 완료! 다음 단계로 가볼까요?');
+  }
+
 
   function confetti(){ $confetti.innerHTML=''; const n=80; for(let i=0;i<n;i++){ const c=document.createElement('div'); c.className='chip'; c.style.left=Math.random()*100+'%'; c.style.top=(Math.random()*-20)+'px'; c.style.background=`hsl(${Math.random()*360},80%,60%)`; c.style.animationDelay=(Math.random()*0.6)+'s'; c.style.animationDuration=(0.8+Math.random()*0.8)+'s'; $confetti.appendChild(c); } }
   function randomGood(){ return pick(['정답! 잘 찾았어요','멋진 탐정이에요','정확해요! 좋은 관찰이에요']); }
