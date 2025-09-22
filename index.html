@@ -95,7 +95,7 @@
         <span class="pill">카테고리</span>
         <label><input type="radio" name="category" value="landscape" checked> 풍경</label>
         <label><input type="radio" name="category" value="animal"> 동물</label>
-        <label><input type="radio" name="category" value="food"> 음식</label>
+        <label><input type="radio" name="category" value="food"> 사물</label>
         <span class="grow"></span>
       </div>
 
@@ -195,25 +195,25 @@ const CONTENT = {
   ],
   // 동물/음식은 임시로 기존 예시 이미지 유지(원하면 같은 방식으로 교체 가능)
   animal: [
-    { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-fake.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal1-orig.png',
+    { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-animal-1.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-1.jpg',
       need:1, spots:[{x:47,y:42,r:7}] },
-    { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-fake.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal2-orig.png',
+    { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-animal-2.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-2.jpg',
       need:1, spots:[{x:55,y:51,r:7}] },
-    { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-fake.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/normal3-orig.png',
+    { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-animal-3.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-3.jpg',
       need:1, spots:[{x:48,y:35,r:7}] }
   ],
   food: [
-    { id:'f-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-fake.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard1-orig.png',
+    { id:'f-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-object-1.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-object-1.jpg',
       need:1, spots:[{x:56,y:40,r:7}] },
-    { id:'f-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-fake.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard2-orig.png',
+    { id:'f-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-object-2.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-object-2.jpg',
       need:1, spots:[{x:49,y:53,r:7}] },
-    { id:'f-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-fake.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/hard3-orig.png',
+    { id:'f-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-object-3.png',
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-object-3.jpgg',
       need:1, spots:[{x:52,y:62,r:7}] }
   ]
 };
@@ -248,21 +248,46 @@ const STORAGE_KEY = 'cleared_categories_v1';
 function loadClears(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){ return {}; } }
 function saveClears(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(GLOBAL.cleared||{})); }
 
+/* 라디오에 클리어(✅) 반영/해제 + 선택 자동 보정 */
 function applyClearsToUI(reset=false){
-  ['landscape','animal','food'].forEach(cat=>{
+  const order = ['landscape','animal','food'];
+  let selectionChanged = false;
+
+  order.forEach(cat=>{
     const input = document.querySelector(`input[name="category"][value="${cat}"]`);
     if(!input) return;
-    // 라벨 텍스트에서 기존 ✅ 제거 후 다시 반영
-    const label = input.parentElement;
-    label.innerHTML = label.innerHTML.replace(' ✅','');
+
+    // 기존 " ✅" 텍스트 제거
+    input.parentElement.innerHTML = input.parentElement.innerHTML.replace(' ✅','');
+
     if(!reset && GLOBAL.cleared[cat]){
+      // 클리어된 항목은 비활성화 + 체크해제 + 라벨에 ✅ 추가
       input.disabled = true;
-      label.innerHTML += ' ✅';
+      if (input.checked) { input.checked = false; selectionChanged = true; }
+      input.parentElement.innerHTML += ' ✅';
     }else{
       input.disabled = false;
     }
   });
+
+  // 현재 선택이 사라졌다면, 다음 미완료 카테고리로 자동 선택
+  const nowChecked = document.querySelector('input[name="category"]:checked');
+  if (!nowChecked){
+    const next = order.find(c => !GLOBAL.cleared[c]); // 미완료 중 첫 번째
+    const fallback = next || order[0];                // 전부 완료면 첫 항목(읽기용)
+    const pick = document.querySelector(`input[name="category"][value="${fallback}"]`);
+    if (pick){
+      pick.checked = true;
+      GLOBAL.category = pick.value;
+      selectionChanged = true;
+    }
+  }else{
+    GLOBAL.category = nowChecked.value;
+  }
+
+  return selectionChanged; // 선택을 조정했는지 여부 반환
 }
+
 
 function speakToast(msg){ speak(msg); toast(msg); }
 function toast(msg){ $toast.textContent=msg; $toast.hidden=false; clearTimeout(toast._t);
@@ -281,9 +306,13 @@ function startTimer(){
 function navPlay(on){ $start.hidden = on; $play.hidden = !on; }
 
 /* ---------- UI 빌드 & 진행 ---------- */
-qsa('input[name="category"]').forEach(r=>{
-  r.onchange = e=>{ GLOBAL.category = e.target.value; buildGrid(); };
+qsa('input[name="category"]').forEach(r=> r.onchange = e=>{
+  // 이미 클리어되어 disabled면 무시(이중 안전장치)
+  if (e.target.disabled) return;
+  GLOBAL.category = e.target.value;
+  buildGrid();
 });
+
 $btnAudio.onclick = ()=>{
   GLOBAL.audio = !GLOBAL.audio;
   $btnAudio.textContent = GLOBAL.audio? '🔊 음성 ON' : '🔈 음성 OFF';
@@ -435,10 +464,11 @@ function randomBad(){return ['괜찮아요, 조금 더 살펴봐요','다른 곳
 
 /* ---------- 초기화/전체화면/세션타이머 ---------- */
 (function init(){
-  // 클리어 상태 복원
-  GLOBAL.cleared = loadClears();
-  applyClearsToUI();
-  buildGrid();
+// 클리어 상태 복원 + 선택 자동 보정
+GLOBAL.cleared = loadClears();
+const changed = applyClearsToUI(); // 선택이 바뀌었는지
+buildGrid();                       // 그리드는 한 번만 갱신
+
 
   // 개발자 모드(헤드라인 5연속 클릭)
   let clickCount=0, clickTimer=null;
