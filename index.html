@@ -179,37 +179,37 @@ const CONTENT = {
     { id:'l-1',
       fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-1.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-1.jpg',
-      need:1, spots:[{x:47,y:42,r:7}] },
+      need:1, spots:[{x:28.8,y:43.4,r:7}] },
     { id:'l-2',
       fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-2.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-2.jpg',
-      need:1, spots:[{x:55,y:51,r:7}] },
+      need:1, spots:[{x:66.1,y:83.7,r:7}] },
     { id:'l-3',
       fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-landscape-3.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-landscape-3.jpg',
-      need:1, spots:[{x:48,y:35,r:7}] }
+      need:1, spots:[{x:19.8,y:48.5,r:7},{x:49.7,y:47,r:7},{x:86.6,y:49.5,r:7}] }
   ],
   animal: [
     { id:'a-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-animal-1.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-1.jpg',
-      need:1, spots:[{x:47,y:42,r:7}] },
+      need:1, spots:[{x:24.6,y:43.2,r:7},{x:42.4,y:40.2,r:7},{x:54.9,y:44.3,r:7},{x:70.0,y:42.4,r:7}] },
     { id:'a-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-animal-2.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-2.jpg',
-      need:1, spots:[{x:55,y:51,r:7}] },
+      need:1, spots:[{x:48.3,y:58.1,r:7},{x:44.1,y:71.4,r:7}] },
     { id:'a-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-animal-3.png',
-      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-3.jpg',
-      need:1, spots:[{x:48,y:35,r:7}] }
+      orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-animal-3.png',
+      need:1, spots:[{x:43.3,y:69.7,r:7}] }
   ],
   object: [
     { id:'o-1', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-object-1.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-object-1.jpg',
-      need:1, spots:[{x:56,y:40,r:7}] },
+      need:1, spots:[{x:35.8,y:54,r:7},{x:59.5,y:54,r:7}] },
     { id:'o-2', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-object-2.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-object-2.jpg',
-      need:1, spots:[{x:49,y:53,r:7}] },
+      need:1, spots:[{x:36.7,y:90.1,r:7},{x:55.4,y:91.4,r:7},{x:78.8,y:88.4,r:7}] },
     { id:'o-3', fake:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/ai-object-3.png',
       orig:'https://raw.githubusercontent.com/hyein1221/ai-ethics-kids-photo/main/images/og-object-3.jpg',
-      need:1, spots:[{x:52,y:62,r:7}] }
+      need:1, spots:[{x:27,y:82.2,r:7},{x:72.9,y:84.0,r:7}] }
   ]
 };
 </script>
@@ -372,7 +372,7 @@ function onStageClick(e){
     console.log(`[개발자 모드] x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`);
   }
   const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) &&
-    Math.hypot(x-h.x,y-h.y) <= (h.r||6) + 5);
+    Math.hypot(x-h.x,y-h.y) <= (h.r||6) + 3);
   
   if(idx>=0){
     ROUND.found.add(idx);
