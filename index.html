@@ -368,10 +368,12 @@ function onStageClick(e){
   const rect=$stage.getBoundingClientRect();
   const x=((e.clientX-rect.left)/rect.width)*100;
   const y=((e.clientY-rect.top)/rect.height)*100;
-
+ if (GLOBAL.dev) {
+    console.log(`[개발자 모드] x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`);
+  }
   const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) &&
-    Math.hypot(x-h.x,y-h.y) <= (h.r||6));
-
+    Math.hypot(x-h.x,y-h.y) <= (h.r||6) + 5);
+  
   if(idx>=0){
     ROUND.found.add(idx);
     $foundSpans.forEach(el=> el.textContent = ROUND.found.size);
