@@ -57,12 +57,7 @@
   .kudos{font-weight:900;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
   footer{margin-top:18px;text-align:center;color:#6b7280;font-size:13px;flex-shrink:0}
 
-  /* 가독성 업: 전체화면에서 폰트/버튼 확대 */
   .difficulty-row{font-size:clamp(16px,2.5vw,20px)}
-  .max:fullscreen h2{font-size:clamp(22px,3vw,28px)}
-  .max:fullscreen .difficulty-row{justify-content:center;font-size:clamp(22px,3vw,28px)}
-  .max:fullscreen .grid{gap:24px}
-  .max:fullscreen .thumb .ghost{font-size:22px;padding:16px 22px}
 
   /* 플레이 화면: 스크롤 없이 한 화면에 맞춤 */
   #screen-play{flex:1;display:flex;flex-direction:column}
@@ -78,7 +73,6 @@
     <h1 class="headline">1차시 | 사진 나라의 수상한 단서 찾기: 진짜와 다른 점을 찾아요</h1>
     <span class="pill">전체 합계: 찾은 단서 <b id="stat-found">0</b> · 전체 사용 시간 <b id="stat-time">00:00</b></span>
     <span class="grow"></span>
-    <button id="btn-fullscreen" class="ghost">🖼️ 전체화면</button>
     <button id="btn-audio" class="ghost">🔈 음성 OFF</button>
   </header>
 
@@ -253,7 +247,6 @@ function applyClearsToUI(reset=false){
     if(!input) return;
     const label = input.parentElement;
 
-    // 기존 " ✅" 텍스트 노드 찾아서 제거 (innerHTML을 건드리지 않는 안전한 방식)
     label.childNodes.forEach(node => {
         if(node.nodeType === Node.TEXT_NODE && node.textContent.includes('✅')){
             node.textContent = node.textContent.replace(' ✅','');
@@ -263,7 +256,7 @@ function applyClearsToUI(reset=false){
     if(!reset && GLOBAL.cleared[cat]){
       input.disabled = true;
       if (input.checked) { input.checked = false; selectionChanged = true; }
-      label.appendChild(document.createTextNode(' ✅')); // HTML을 새로 그리지 않고 텍스트만 추가
+      label.appendChild(document.createTextNode(' ✅'));
     }else{
       input.disabled = false;
     }
@@ -347,7 +340,7 @@ function playStep(){
   $result.hidden = true;
   const catLabel = (GLOBAL.category==='landscape'?'풍경':GLOBAL.category==='animal'?'동물':'사물');
   $playTitle.textContent = `📷 ${catLabel} ${ROUND.step+1}단계`;
-  $playCaption.textContent = '틀린 점 1곳을 찾아 클릭해요!';
+  $playCaption.textContent = `틀린 점 ${ROUND.need}곳을 찾아 클릭해요!`;
   $foundSpans.forEach(el=> el.textContent='0');
   $needSpans.forEach(el=> el.textContent=ROUND.need);
 
@@ -402,7 +395,7 @@ function showHint(item){
     const h=item.spots[i];
     const g=document.createElement('div'); g.className='hotspot';
     g.style.left=h.x+'%'; g.style.top=h.y+'%';
-    g.style.width=g.style.height=(h.r*60)+'px';
+    g.style.width=g.style.height=(h.r*10)+'px';
     g.style.opacity=.75; g.style.borderStyle='solid';
     $stage.appendChild(g);
     setTimeout(()=> g.remove(), 1600);
@@ -422,7 +415,7 @@ function onWin(){
 
   const last = ROUND.step >= CONTENT[GLOBAL.category].length-1;
   const $next = qs('#btn-other');
-  $next.textContent = last ? '홈으로' : '다음 단계 →';
+  $next.textContent = last ? '홈으로' : '다른 사진 보기 →';
   $next.onclick = ()=>{
     if(last){
         showCategoryClear(GLOBAL.category);
@@ -472,7 +465,7 @@ function confetti(){
 function randomGood(){return ['정답! 잘 찾았어요','멋진 탐정이에요','정확해요! 좋은 관찰이에요'][Math.floor(Math.random()*3)]}
 function randomBad(){return ['괜찮아요, 조금 더 살펴봐요','다른 곳도 있을 수 있어요','천천히 다시 볼까요?'][Math.floor(Math.random()*3)]}
 
-/* ---------- 초기화/전체화면/세션타이머 ---------- */
+/* ---------- 초기화/세션타이머 ---------- */
 (function init(){
   GLOBAL.cleared = loadClears();
   
@@ -491,18 +484,6 @@ function randomBad(){return ['괜찮아요, 조금 더 살펴봐요','다른 곳
     clickCount++; clearTimeout(clickTimer);
     clickTimer=setTimeout(()=>clickCount=0,1000);
     if(clickCount>=5){ GLOBAL.dev=true; clickCount=0; toast('✨ 개발자 모드 ON'); }
-  };
-
-  // 전체화면
-  const $fullscreenTarget = qs('.max');
-  qs('#btn-fullscreen').onclick = ()=>{
-    if(!document.fullscreenElement){
-      ($fullscreenTarget.requestFullscreen||$fullscreenTarget.webkitRequestFullscreen||$fullscreenTarget.msRequestFullscreen).call($fullscreenTarget);
-      qs('#btn-fullscreen').textContent='🖼️ 전체화면 닫기';
-    }else{
-      document.exitFullscreen && document.exitFullscreen();
-      qs('#btn-fullscreen').textContent='🖼️ 전체화면';
-    }
   };
 
   // 화면 상단 전체 사용 시간(세션 유지)
