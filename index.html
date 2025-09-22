@@ -372,7 +372,7 @@ function onStageClick(e){
     console.log(`[개발자 모드] x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`);
   }
   const idx=(ROUND.item.spots||[]).findIndex((h,i)=> !ROUND.found.has(i) &&
-    Math.hypot(x-h.x,y-h.y) <= (h.r||6) + 3);
+    Math.hypot(x-h.x,y-h.y) <= (h.r||6) + 5);
   
   if(idx>=0){
     ROUND.found.add(idx);
